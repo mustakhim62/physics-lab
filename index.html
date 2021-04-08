@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="windows-1251">
+		<title>Опыт Милликена</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<link rel="stylesheet" type="text/css" href="../css/styleM.css">
+<style type="text/css">
+td{border: 1px solid black;}
+</style>
+<script type="text/javascript" SRC="./js/move_ball_H1.js"></script>
+<script type="text/javascript" SRC="./js/counterE.js"></script>
+<script type="text/javascript" SRC="./js/myTime.js"></script>
+<script type="text/javascript">
+var start=false;
+var onOff=true;
+var onTime=true;
+var U=200;
+function refObj(s){   
+  if(document.getElementById) return document.getElementById( s );
+  else return eval('document.all.' + s);
+}
+function setU(){   
+  if(onOff) {refObj("OnOff").innerHTML="Выкл";
+  	onOff=false;
+  	U=refObj("text1").value;
+  	cngU();
+  }
+  	else {refObj("OnOff").innerHTML="Вкл";onOff=true;
+  		U=0;cngU();
+  	}
+}
+function setTime(){   
+  if(onTime) {refObj("tm").innerHTML="Стоп";onTime=false;StartTime()}
+  	else {refObj("tm").innerHTML="Таймер";onTime=true;TimeStop()}
+}
+function startDrop(){   
+  startM();
+}
+function to_theory(){
+  window.open("theory_Millican.html", "_blank"); //window.location.href="theory_Millican.html";
+}
+function formExit()
+{
+	document.location.href = "../atomic.html";	
+}
+</script>
+</head>
+<body style="width:80%;margin-left: 10%;background-color: #ece9d8" >
+<table style="width:750px;margin: auto;"><TBODY>
+<tr>
+<td style="border: 0"><INPUT style="display: inline-block;margin-right: 30px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="to_theory()" type="button" value="Теория">
+<h3>Опыт Милликена</h3><INPUT style="display: inline-block;margin-left: 30px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="formExit()" type="button" value="Выход">
+</td>
+</tr></TBODY></TABLE>
+<DIV class="H">В настоящей работе Вам предлагается проделать опыт Милликена по определению заряда электрона (1911). Его экспериментальная установка представляла собой большой плоский конденсатор из двух металлических пластин с камерой между ними. На обкладки конденсатора Милликен подавал постоянное напряжение, создавая на них высокую разность потенциалов, а между обкладками помещал мелко распыленные капли масла. Сначала Милликен измерил установившуюся скорость падения капель <b>v<sub>1</sub></b>— то есть скорость, при которой сила земного притяжения <b>mg</b>, действующая на капли, уравновешивается силой сопротивления воздуха. На каплях возникает заряд в результате трения их о воздух, заполняющий камеру. Затем следовали измерения подъема капли при включенной батарее. Теперь добавилась сила <b>qE</b>, действующая на каплю  зарядом <b>q</b> со стороны электрического поля <b>E</b>. Следуют измерения установившейся скорости <b>v<sub>2</sub></b>. Капля движется равномерно, следовательно, силы уравновешены.
+<br>Опыт Милликена был крайне трудоемок. Наградой за титанический труд стала Нобелевская премия по физике за 1923 год, присужденная Милликену за работу по определению элементарного заряда и по фотоэффекту.
+<br>Перед выполнением работы <span style="color:crimson; font-size:22px"><i>обязательно</i></span> ознакомьтесь с положениями теории, щёлкнув по кнопке "Теория".<br>
+</DIV>		
+<table style="margin: auto;height:550px;width:97%;background-color:#ece9d8;border:1px solid black">
+<tr>
+<td ID="td0" style="height:550px;width:77%;color:#484aaa;background-color:#FFFFF1">
+ <canvas id="Canvas1" width="500" height="500">no Canvas</canvas>
+<script type="text/javascript">
+init1();
+</script>
+</td>
+<td style="width:23%;vertical-align: top;">
+<table style="width:100%;border:1px solid black">
+<tr>
+<td ID="td1" style="width:100%;height:100px">
+ <canvas id="CanvasC" width="110" height="40">no Canvas</canvas>
+<script type="text/javascript">
+initC();
+set_digits(0);
+</script>
+</td>
+</tr>
+<tr>
+<td style="width:100%;height:40px"><button id="tm" style="color:#AA0000" onclick="javascript:setTime()">Таймер</button>&nbsp;&nbsp;<button id="tm1" style="color:#AA0000" onclick="javascript:clearTime()">Сброс</button>
+</td>
+</tr>
+<tr>
+<td style="width:100%;height:40px"><button style="color:#0000AA" onclick="javascript:startDrop()">Старт</button>
+</td>
+</tr>
+<tr style="text-align: center">
+<td style="width:100%;height:40px">U =&nbsp;&nbsp;&nbsp;+<input type="text" ID="text1" size="5" value="400">&nbsp;&nbsp;<button id="OnOff" style="color:#0000AA" onclick="javascript:setU()">Вкл</button>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(71529175, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->	
+	</body>
+</html>
