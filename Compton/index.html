@@ -1,0 +1,359 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <link rel=stylesheet href="../css/mysheet.css" type="text/css">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Эффект Комптона</title>
+    <style type="text/css">
+        td {
+            border: 1px solid black;
+        }
+        
+        td.a {
+            border-bottom-width: 0;
+            border-top-width: 0;
+        }
+    </style>
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <SCRIPT type="text/javascript" SRC="../js/total.js"></SCRIPT>
+    <script type="text/javascript" SRC="./js/compton.js"></script>
+    <script type="text/javascript" SRC="./js/countC.js"></script>
+    <script type="text/javascript" SRC="./js/comptonGraph.js"></script>
+    <script type="text/javascript" SRC="./js/MathLib.js"></script>
+    <script type="text/javascript" src="./js/jquery.flot.js"></script>
+    <script type="text/javascript" src="./js/jquery.flot.symbol.js"></script>
+    <script type="text/javascript" src="./js/jquery.flot.axislabels.js"></script>
+    <script type="text/javascript" src="./js/CanvasInput.min.js"></script>
+    <script type="text/javascript">
+        var ntext = 1;
+        //================================
+        var atext = new Array();
+        var di = new Array();
+        var input = new Array();
+        var teta_ask = 50;
+        //=================================
+        var d = 1;
+        var nv = 1;
+        //var ntext=1;
+        var start = false;
+        var dtop;
+        var dleft;
+        var timerID;
+        var sp = '<span style="font-size:16;font-weight:bold;padding-left:5">';
+        var ctext = [sp + 'Угол поворота детектора, ' + '&#176;<\/span>', sp + 'Число<br> импульсов<\/span>'];
+        //=================================
+        function formInit() {
+            refObj("text3").value = "";
+            refObj("text4").value = "";
+            refObj("sel").selectedIndex = 1;
+            refObj("ctext").innerHTML = ctext[0];
+            setTimeout("showText()", 300);
+            init_count_angle();
+            set_digitsA(0);
+            init();
+            paint2();
+            paint();
+        }
+
+        function showText() {
+            setText(ntext, "cc");
+            refObj("cc").style.visibility = "visible";
+        }
+
+        function setT(dir, name) {
+            if (isCount) return;
+            change_pic(name, 2);
+            d = dir;
+            addTeta(dir);
+        }
+
+        function stopT(name) {
+            window.clearInterval(timerID);
+            change_pic(name, 1);
+        }
+
+        function startCount() {
+            if (start) {
+                isCount = true;
+                startCount2()
+                refObj("ctext").innerHTML = ctext[1];
+                refObj("sel").disabled = true;
+            }
+        }
+
+        function infCount() {
+            nv = 0;
+            refObj("sel").disabled = false;
+            window.setTimeout("f()", 1000)
+        }
+
+        function formStart() {
+            getCount();
+            setOnOff();
+            start = !start;
+        }
+
+        function formSubst() {
+            var m = refObj("sel").options[refObj("sel").selectedIndex].value;
+            refObj("text3").value = "";
+            setSubst(m);
+        }
+
+        function formTasks() {
+            if (ntext < 8) ntext++;
+            setText(ntext, "cc");
+            if (ntext == 8) clearTable()
+            if (ntext < 3) refObj("text3").disabled = true;
+            else refObj("text3").disabled = false;
+            formInit();
+        }
+
+        function chngGraph() {
+            if (nv == 0) {
+                refObj("Graph1").style.visibility = "visible";
+                refObj("Graph2").style.visibility = "hidden";
+            } else {
+                d1 = [];
+                refObj("Graph1").style.visibility = "hidden";
+                refObj("Graph2").style.visibility = "visible";
+                for (i = 1; i < 6; i++) d1.push([cells[0][i].getValue(), input[i - 1]._value])
+                setData();
+            }
+            nv = 1 - nv;
+        }
+
+        function formOk() {
+            s = refObj("text3").value;
+            if (ntext < 3 || s == "") return
+            refObj("text4").value = round_double(getAnswer(ntext));
+        }
+
+        function formBack() {
+            document.location.href = "../photoeffect/index.html";
+        }
+
+        function formExit() {
+            document.location.href = "../atomic.html";
+        }
+    </script>
+</head>
+
+<body style="background-image: url(images/ffon1.gif)" onload='formInit()'>
+    <table style="width:740px;margin: auto;">
+        <tr>
+            <td style="width:740px;border: 0">
+                <INPUT style="float: right;margin-right: 10px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;display: inline-block;" type="button" value="Вопросы" onclick="windTasks(5)">
+                <h1 style="color:#FF4500;font-size:35px;font-style:oblique;text-align: center;display: inline-block;">
+                    Эффект Комптона</h1>
+                <a HREF="../atomic.html" style="display: inline-block;float:left">
+                    <INPUT style="margin-right: 10px;font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" type="button" value="Выход">
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:740px;border: 0">
+                <div style="text-align:justify;padding:4px;text-indent:30px">
+                    В случаях, когда волны отражаются или претерпевают дифракцию на препятствиях, нет основания ожидать изменения длины волны или частоты. Поэтому немалое удивление вызвал опыт Комптона, показавший, что у рентгеновских лучей, рассеянных атомами, обнаруживается
+                    наряду с первоначальной частотой &#957;
+                    <sub>o</sub> новая частота &#957;&#039;. Такое рассеяние со сдвигом частоты называется эффектом Комптона. Поскольку величина &#916;&#957; весьма мала, эффект Комптона наблюдается только для достаточно коротковолновых излучений. Результаты
+                    этого опыта можно объяснить, только предположив, что фотон обладает импульсом, и фотон с электроном взаимодействуют подобно двум сталкивающимся шарам.
+                    <p style="text-align:justify;margin-top:0;text-indent:30;margin-bottom:0">Установка для изучения эффекта Комптона состоит из рентгеновской трубки (1), двух диафрагм (2), выделяющих узкий пучок монохроматического рентгеновского излучения, фольги из исследуемого вещества (3) и детектора излучения (4). Детектор
+                        может поворачиваться относительно фольги. За проведенные эксперименты и истолкование их результатов (1922 г.) Артур Комптон был удостоен Нобелевской премии в 1927 г.</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table style="width:740px;margin: auto;border:1px solid black;background-color: #DED6C6" ID="table1">
+        <tr>
+            <td style="width:400px;height:270px;background-color: #000000" colspan="2">
+                <canvas id="Canvas1" width="400" height="270"> no Canvas.</canvas>
+                <script type="text/javascript">
+                    init();
+                    paint();
+                </script>
+            </td>
+            <td id="poleGraph" style="width:324px;height:270px;">
+                <div id="Graph2" style="height: 269px; max-width: 324px; margin: 0px auto;visibility:hidden; z-index:1">
+                    <script type="text/javascript">
+                        graph1 = document.getElementById("Graph2");
+                        yytop = refObj('poleGraph').getBoundingClientRect().top + document.body.scrollTop;
+                    </script>
+                    <script type="text/javascript">
+                        document.write('<div id="Graph1" style="position:absolute;top:' + yytop + 'px;height: 269px; max-width: 324px; margin: 0px auto;visibility:visible; z-index=2">')
+                    </script>
+                    <canvas id="comptonGraph" width="324" height="269">no Canvas</canvas>
+                    <script type="text/javascript">
+                        init2();
+                        paint2();
+                    </script>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:405px;height:50px;" colspan="2">
+                <table style="width:405px;border: 0;border-collapse: collapse;">
+                    <tr>
+                        <td class="a" style="width:62px;height:50px;">
+                            <img ID='img_for_up' src="images/up_down0.gif" style="float: left;width:31px;height:26px;" onMouseDown="setT(1,'img_for_up')" onMouseUp="stopT('img_for_up')" onMouseout="stopT('img_for_up')" alt="Up">
+                            <img ID='img_for_dn' src="images/up_down2.gif" style="float: right;width:31px;height:26px;" onMouseDown="setT(-1,'img_for_dn')" onMouseUp="stopT('img_for_dn')" onMouseout="stopT('img_for_dn')" alt="Down">
+                        </td>
+                        <td class="a" style="width:115px;height:50px;">
+                            <div ID="ctext" style="width:115px;height:50px;margin-top: 12px;filter:revealTrans(duration=1);visibility:visible">
+                                Угол поворота детектора, &#176;</div>
+                        </td>
+                        <td class="a" style="width:110px;height:50px;text-align: center;padding-top: 10px;">
+                            <canvas id="Canvas2" width="110" height="40">no Canvas.</canvas>
+                            <script type="text/javascript" SRC="./js/countC.js"></script>
+                        </td>
+                        <td class="a" style="width:90px;height:50px;text-align: center;vertical-align: middle;">
+                            <button style="color:#AA0000" type="button" onclick="javascript:startCount()">Счет</button>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:320px;height:135px;text-align: center;" rowspan="4">
+                <table style="width:320px;border-collapse: collapse;">
+                    <tr>
+                        <td style="width:320px;height:75px">
+                            <canvas id="CanvasTable" width="320" height="75">
+								no Canvas.
+							</canvas>
+                            <script type="text/javascript" SRC="./js/table.js"></script>
+                            <script type="text/javascript">
+                                var elem = document.getElementById('CanvasTable');
+                                contt = elem.getContext('2d');
+                                prepare_screenT(contt, 3, 6);
+                                var topY = Math.round(elem.getBoundingClientRect().top + document.body.scrollTop);
+                                var leftX = Math.round(elem.getBoundingClientRect().left);
+                                for (i = 0; i < 5; i++) {
+                                    document.write('<canvas id="canvas' + i + '" width="48" height="20" style="position: absolute;z-index: 2;top:' + (topY + 25) + 'px;left:' + (leftX + 53 * (i + 1)) + 'px">no Canvas.</canvas>')
+                                }
+                                var input = new Array(6);
+                                for (i = 0; i < 5; i++) {
+                                    input[i] = new CanvasInput({
+                                        canvas: document.getElementById('canvas' + i),
+                                        borderWidth: 1,
+                                        padding: 0,
+                                        borderColor: '#000',
+                                        borderRadius: 3,
+                                        width: 48,
+                                        height: 20,
+                                        value: ''
+                                    });
+                                }
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:320px;height:60px">
+                            <table style="width:320px;border-collapse: collapse;">
+                                <tr>
+                                    <td style="width:100px;height:60px" rowspan="2">
+                                        <button style="color:#0000AA;width:100px;height:60px" type="button" onclick="javascript:chngGraph()">График</button>
+                                    </td>
+                                    <td style="width:220px;height:30px;font-weight:bold;text-align:center;font-size:17px;background-color:#DED6C6">
+                                        Ваш ответ&#160;<input disabled type="text" ID="text3" size="5" value="" style="background-color:white" onkeypress="formEnter()">
+                                        <input TYPE="button" name="b1" value="Ok" onClick="formOk()" style="background-color:rgb(230,230,230);font-weight:normal">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:220px;height:30px;font-weight:bold;font-size:17px;text-align:center;background-color:#DED6C6">
+                                        Правильно:&#160;
+                                        <input style="color:blue;border:none;padding-top:2px;background-color:#DED6C6" type="text" ID="text4" size="6" value="" readonly>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td id="myText" style="width:288px;height:90px" rowspan="3">
+                <div id="cc" style="width:288px;height:90px;font-size:12px;font-weight: bold;overflow-y: scroll;visibility: hidden;">
+                </div>
+                <script type="text/javascript">
+                    function Load(url) { //загрузка текста
+                        $('#cc').load(url, function(response) {
+                            atext = $dd = response.split("\n");
+                            di = atext[0].split(" ");
+                        });
+                    }
+
+                    function cng_text() {
+                        teta_ask = Math.round(rand(30)) + 50;
+                        Load('./data/photon2.txt');
+                        //	Load('http://localhost/tmp/photon2_UTF.txt');
+                    }
+                    cng_text();
+
+                    function setText(n, target) {
+                        if (n > di.length) return;
+                        s = 0;
+                        for (i = 0; i < n - 1; i++) s = s + parseInt(di[i]);
+                        nstart = (n == 1) ? 1 : s + 1;
+                        nend = nstart + parseInt(di[n - 1]);
+                        str = "";
+                        for (i = nstart; i < nend; i++) {
+                            sst = atext[i].replace("99", String(teta_ask));
+                            str = str + sst;
+                        }
+                        refObj(target).innerHTML = str;
+                    }
+                </script>
+            </td>
+            <td style="width:98px;height:25px;text-align: center">
+                <SELECT ID="sel" onChange="formSubst()" style="background-color:white;font-weight:bold;font-family:Times,Serif;font-size:14px;height:25px">
+					<OPTION value="0">&nbsp;&nbsp;&nbsp;Алюминий</OPTION>
+					<OPTION value="1">&nbsp;&nbsp;&nbsp;Медь</OPTION>
+					<OPTION value="2">&nbsp;&nbsp;&nbsp;Свинец</OPTION>
+				</SELECT>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:96px;height:26px;text-align: center;vertical-align: middle;">
+                <button style="color:#0000AA" type="button" onclick="javascript:formTasks()">Задание</button>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:98px;height:26px;text-align: center;vertical-align: middle;">
+                <button style="color:#AA0000" type="button" onclick="javascript:formStart()">Старт</button>
+            </td>
+        </tr>
+    </table>
+    <table style="width:750px;margin: auto;">
+        <tr>
+            <td style="border: 0">
+                <input style="color:#000000;float: left;" type="button" value="Вопросы" onclick="windTasks(5)">&nbsp;&nbsp;
+                <input style="width:90px;color:#0000AA;float: left;" value="Справка" type="button" onclick="windOpen('photonH.html')">&nbsp;&nbsp;
+                <input style="color:#000000;float: right;" type="button" value="Выход" onclick="javascript:formExit()">&nbsp;&nbsp;
+                <input style="color:#0000AA;float: right;" type="button" value="Назад" onclick="javascript:formBack()">&nbsp;&nbsp;
+            </td>
+        </tr>
+    </table>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript>
+		<div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div>
+	</noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+body, UL, OL, DIR, MENU, DIV, DT, DD, ADDRESS, BLOCKQUOTE, PRE, P, LI,
+ UL, INPUT, textarea
+{
+color: #000000;
+font-size: 12pt;
+font-style: normal;
+font-weight: bold;
+font-family: Times,Arial,Courier,serif;
+text-align: center;
+}
+h1
+{
+color: #8D7552;
+font-size: 18pt;
+font-style: normal;
+font-weight: bold;
+font-family: Times,Arial,Courier,serif;
+text-align: center;
+}
+h2
+{
+color: #000000;
+font-size: 16pt;
+font-style: normal;
+font-weight: bold;
+font-family: Times,Arial,Courier,serif;
+text-align: center;
+}
+h3
+{
+color: #000000;
+font-size: 15pt;
+font-style: normal;
+font-weight: bold;
+font-family: Times,Arial,Courier,serif;
+text-align: center;
+}
+p.f{font-size:18;font-weight:normal;margin-top: 0;margin-bottom: 0;text-align:center}
+p.H{font-size:18;font-weight:normal;text-align:justify;text-indent:30;font-family:Times,serif,Arial;margin-bottom:0;margin-top:0;margin-left:4px;margin-right:4px}

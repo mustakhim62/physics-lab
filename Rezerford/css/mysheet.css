@@ -1,0 +1,67 @@
+﻿body,
+UL,
+OL,
+ADDRESS,
+PRE,
+P,
+LI,
+INPUT {
+    color: #000000;
+    font-size: 16;
+    font-style: normal;
+    font-weight: bold;
+    font-family: serif, Times, TimesRoman;
+    text-align: center;
+}
+
+td {
+    font-family: serif, Times, TimesRoman;
+    font-size: 18
+}
+
+div,
+p {
+    font-family: serif, Times, TimesRoman;
+    font-weight: bold;
+    font-size: 18
+}
+
+select {
+    font-weight: bold;
+    font-family: serif, Times, Arial;
+}
+
+h1 {
+    color: #8D7552;
+    font-size: 22;
+    font-style: normal;
+    font-weight: bold;
+    font-family: serif, Times, Arial;
+    text-align: center;
+}
+
+h2 {
+    color: #000000;
+    font-size: 20;
+    font-style: normal;
+    font-weight: bold;
+    font-family: serif, Times, Arial;
+    text-align: center;
+}
+
+h3 {
+    color: #000000;
+    font-size: 19;
+    font-style: normal;
+    font-weight: bold;
+    font-family: serif, Times, Arial;
+    text-align: center;
+}
+
+p.H {
+    font-weight: normal;
+    text-align: justify;
+    text-indent: 30;
+    margin-bottom: 0;
+    margin-top: 0;
+}

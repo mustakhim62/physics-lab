@@ -1,0 +1,71 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+
+<head>
+    <title></title>
+    <meta name="" content="">
+    <script type="text/javascript">
+        var imageData;
+        var x = 89;
+        var y = 6;
+
+        function init() {
+            atom = new Image();
+            atom.src = './images/atom.gif';
+            Canvas1 = document.getElementById("CanvasA");
+            context = Canvas1.getContext('2d');
+            context.drawImage(atom, 0, 0);
+            imageData2 = atom.getData();
+            var pixels2 = imageData2.data;
+            alert(imageData2.width)
+            imageData = context.getImageData(0, 0, Canvas1.width, Canvas1.height);
+            var pixels = imageData.data;
+            var numPixels = imageData.width * imageData.height;
+            for (var i = 0; i < numPixels; i++) {
+                //    pixels[i*4] = 255-pixels[i*4]; // Red
+                if (pixels[i * 4 + 1] == 85) pixels[i * 4 + 1] = 255; // Green
+                if (pixels[i * 4 + 2] == 85) pixels[i * 4 + 2] = 255;
+            };
+            context.clearRect(0, 0, Canvas1.width, Canvas1.height);
+            context.putImageData(imageData, 0, 0);
+            //var pixelRedIndex = ((y - 1) * (imageData.width * 4)) + ((x - 1) * 4);
+            //var pixelcolor = "rgb("+pixels[pixelRedIndex]+", "+pixels[pixelRedIndex+1]+", "+pixels[pixelRedIndex+2]+")";//, "+pixels[pixelRedIndex+3]+")";
+            //alert(pixelcolor)
+        }
+
+        function changeColorURI(data, oldColor, newColor) {
+            var img, cnv, cnt, imgData;
+
+            img = document.createElement('img');
+            img.src = data;
+
+            cnv = document.createElement('canvas');
+            cnv.width = img.width;
+            cnv.height = img.height;
+
+            ctx = cnv.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+
+            imgData = ctx.getImageData(0, 0, cnv.width, cnv.height)
+            data = imgData.data;
+
+            for (var x = 0, len = data.length; x < len; x += 4) {
+                if ((data[x] == oldColor[0]) && (data[x + 1] == oldColor[1]) && (data[x + 2] == oldColor[2])) {
+                    data[x] = newColor[0];
+                    data[x + 1] = newColor[1];
+                    data[x + 2] = newColor[2];
+                }
+            }
+
+            ctx.putImageData(imgData, 0, 0);
+            return cnv.toDataURL();
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <canvas id="CanvasA" width="120" height="92"> no Canvas.</canvas>
+
+</body>
+
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <link rel=stylesheet href="../css/mysheet.css" type="text/css">
+    <link rel="stylesheet" href="../css/style.css" type="text/css">
+    <style type="text/css">
+        td {
+            border: 1px solid black;
+        }
+        
+        td.a {
+            border: 0px;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+    <title> Частица в потенциальной яме 2</title>
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <script type="text/javascript" SRC="./js/sqwall2.js"></script>
+    <script type="text/javascript" SRC="./js/tableSq.js"></script>
+    <script type="text/javascript" SRC="./js/graphSqwall.js"></script>
+    <script type="text/javascript" SRC="./js/sqwallGraph.js"></script>
+    <script type="text/javascript">
+        var atext = new Array();
+        var di = new Array();
+        var ntext = 1;
+        var all_text;
+        var true_answ = new Array(5)
+        var n_answ, n2_answ, x1_answ, x2_answ;
+
+        function windTasks(n) {
+            var w = 850;
+            var l = 0;
+            ntask = n;
+            if (screen.width > 800) {
+                w = 800;
+                l = 20;
+            };
+            window.open('../question/question.html?nt=' + ntask, 'Задачи', 'width=' + w + ',height=600,scrollbars=yes,left=' + l + ',top=10')
+        }
+
+        function windOpen(s) {
+            var w = 780;
+            var h = 600;
+            if (screen.width <= 800) {
+                w = 600;
+                h = 400;
+            };
+            window.open(s, null, 'width=' + w + ',height=' + h + ',left=50,top=80,scrollbars=yes') //530
+        }
+
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function inside(x, xmin, xmax) {
+            if (x < xmin) return xmin;
+            else if (x > xmax) return xmax;
+            else return x;
+        }
+
+        function formStart() {
+            setText(ntext, "myText");
+            setP(refObj("sel").selectedIndex - 1);
+            k = inside(refObj("text1").value, 1E-5, 10);
+            refObj("text1").value = k;
+            setWidth(k);
+            k = inside(refObj("text2").value, 1, 1E8);
+            refObj("text2").value = k;
+            setU0(k);
+            newStart4();
+        }
+
+        function formAlert() {
+            window.open("alert.html", null, "height=130,width=400,scrollbar=yes")
+        }
+
+        function formTasks() {
+            refObj("text3").value = "";
+            refObj("text4").value = "";
+            ntext++;
+            if (ntext == 5) ntext = 1;
+            setText(ntext, "myText");
+            //	refObj("Show").setAddText();
+            //	nt=refObj("Show").getNtext();
+            refObj("text3").disabled = (ntext == 1)
+            setCross5(ntext == 4);
+            if (ntext == 4) {
+                //		refObj("Canvas5").setFocus();
+                refObj("text1").value = "1";
+                refObj("text2").value = "8";
+                setWidth(1);
+                setU0(8);
+                newStart4();
+            }
+        }
+
+        function prepareTasks() {
+            n_answ = 2 + Math.round(4 * Math.random()); // задание 3
+            all_text = all_text.replace("&1", String(n_answ));
+            //	true_answ[3] = String(4*n_answ*n_answ);
+            n2_answ = 1 + Math.round(3 * Math.random()); // задание 4
+            all_text = all_text.replace("&2", String(n2_answ));
+            x1_answ = 1 + Math.round(4 * Math.random());
+            all_text = all_text.replace("&3", String(x1_answ / 10));
+            x2_answ = 3 + Math.round(4 * Math.random());
+            all_text = all_text.replace("&4", String(x2_answ / 10));
+        }
+        // ============================================  
+        function formOk() {
+            s = refObj("text3").value;
+            if (ntext == 1 || s == "") return
+            if (ntext == 2 || ntext == 4) refObj("text4").value = getAnswer(ntext)
+            if (ntext == 3) {
+                refObj("text4").value = Math.round(n_answ * n_answ * 4 * 100) / 100 + " эВ"
+            }
+        }
+
+        function formInit() {
+            refObj("text3").disabled = true;
+            refObj("sel").selectedIndex = 1;
+            setTimeout('setText(ntext,"myText")', 100);
+        }
+
+        function formEnter(e) {
+            if (!e) {
+                e = window.event;
+                if (e.keyCode == 13) formOk();
+            }
+        }
+
+        function to_back() {
+            window.location.href = "./sql12.html";
+        }
+
+        function to_exit() {
+            window.location.href = "../atomic.html";
+        }
+    </script>
+</head>
+
+<body style="background-image: url(images/45.jpg);margin:0;" onLoad="formInit()">
+    <table style="width:750px;margin: auto;">
+        <tr>
+            <td class="a">
+                <INPUT style="display: inline-block;margin-right: 30px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="windTasks(10)" type="button" value="Задачи">
+                <h1 style="display: inline-block;color:#FFFFD0;font-size:27px;font-style:oblique">Движение частицы в потенциальной<br> яме конечной глубины</h1>
+                <INPUT style="display: inline-block;margin-left: 30px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="to_back()" type="button" value="Назад">
+            </td>
+        </tr>
+        <tr>
+            <td style="background-image:URL(images/ffon1.gif)">
+                <div style="text-align:justify;padding:4px;">
+                    Частица, имеющая массу m, движется в потенциальной яме шириной a и глубиной U
+                    <sub>0</sub>. Значения m, a и U<sub>0</sub> Вы можете задавать сами. Если положение подвижной стрелки на шкале энергий совпадет с уровнем энергии, то значение энергии высветится на экране, и будет построен график зависимости плотности
+                    вероятности нахождения частицы от координаты &#124;&#936;&#124;<sup>2</sup>.</div>
+                <div style="text-align:left;padding-left:50px;font-style:oblique">
+                    Вы можете решить три задачи:<br> 1. Найти разрешенные значения энергии для частицы в яме.<br> 2. Построить зависимость энергии уровня от его номера.<br> 3. Определить вероятность обнаружения частицы в интервале x
+                    <sub>1</sub> &lt; x &lt;<sub>2</sub>.<br></div>
+                <div style="text-align:justify;padding:4px">
+                    В первом упражнении нужно сделать выбор частицы и рассчитывать движение электрона, мюона или протона, в дальнейшем будем решать задачи только для электрона.</div>
+            </td>
+        </tr>
+    </table>
+    <table style="width:740px;margin: auto;border:1px solid gray;background-color: #FFFFFF">
+        <tr>
+            <td style="width:213px;height:250px;">
+                <canvas id="Canvas4" width="213" height="246">	no Canvas.</canvas>
+                <script type="text/javascript">
+                    init4(); // sqwall2.class
+                    //paint1();
+                </script>
+            </td>
+            <td style="width:250px">&nbsp;
+                <canvas id="Canvas5" width="250" height="250">	no Canvas.</canvas>
+                <script type="text/javascript">
+                    init5(); // graphSqwall.class
+                </script>
+            </td>
+            <td style="width:250px" colspan="2">&nbsp;
+                <canvas id="Canvas6" width="250" height="250">	no Canvas.</canvas>
+                <script type="text/javascript">
+                    Canvas6 = document.getElementById('Canvas6'),
+                        ctx = Canvas6.getContext('2d');
+                    init_scatterGraph(100, 1, "n\u00b2", "E/U0", ""); //
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <td class="a" style="width:740px;height:50px;" colspan="4">
+                <canvas id="CanvasTable" width="730" height="50">
+	no Canvas.
+</canvas>
+                <script type="text/javascript">
+                    var elem = document.getElementById('CanvasTable');
+                    contt = elem.getContext('2d');
+                    prepare_screenT(contt, 2, 11);
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:213px;height:30px;text-align: center;vertical-align:middle;background-image:URL(images/ffon1.gif)">
+                <button style="width:90px;color:#0000AA" type="button" onclick="javascript:formTasks()">Задание</button>
+            </td>
+            <td id="myText" style="width:250px;height:100px;font-size:12px;font-weight: bold;overflow-y: scroll" rowspan="3">
+                <div id="cc" style="visibility: hidden;overflow-y: scroll"></div>
+                <script type="text/javascript">
+                    function Load(url) { //загрузка текста
+                        $('#cc').load(url, function(response) {
+                            all_text = $dd = response;
+                            prepareTasks();
+                            atext = all_text.split("\n");
+                            //atext=$dd=response.split("\n");
+                            di = atext[0].split(" ");
+                            //alert("Load all_text="+all_text)
+                        });
+                    }
+
+                    function cng_text() {
+                        Load('./data/pit_UTF.txt');
+                        //	Load('http://localhost/teachmen/work/atomic_new/sqwall/data/pit_UTF.txt');
+                    }
+                    cng_text();
+
+                    function setText(n, target) {
+                        //alert("setText n= "+n+" target= "+target)
+                        if (n > di.length) return;
+                        s = 0;
+                        for (i = 0; i < n - 1; i++) s = s + parseInt(di[i]);
+                        nstart = (n == 1) ? 1 : s + 1;
+                        nend = nstart + parseInt(di[n - 1]);
+                        str = "";
+                        for (i = nstart; i < nend; i++) {
+                            //		sst="";//atext[i].replace("99",String(teta_ask));
+                            //		str=str+sst;
+                            str = str + atext[i];
+                        }
+                        refObj(target).innerHTML = str;
+                    }
+                </script>
+            </td>
+            <td style="width:146px;height:30px;text-align: center;vertical-align:middle;background-image:URL(images/ffon1.gif)">
+                <SELECT ID="sel" style="background-color:white;font-weight:bold;font-family:Times,Serif;font-size:14px">
+		   <OPTION value=77 SELECTED>&nbsp;Выбор частицы:</OPTION>
+		   <OPTION value=0>&nbsp;&nbsp;&nbsp;электрон</OPTION>
+		   <OPTION value=1>&nbsp;&nbsp;&nbsp;мюон</OPTION>
+		   <OPTION value=2>&nbsp;&nbsp;&nbsp;протон</OPTION>
+		   </SELECT>
+            </td>
+            <!-- height="30"-->
+            <td style="width:102px;height:30px;text-align: center;vertical-align:middle;background-image:URL(images/ffon1.gif)">
+                <button style="width:68px;color:#000000" type="button" onclick="javascript:formStart()">Ввод</button>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:213px;height:30px;text-align: center;vertical-align:middle;background-image:URL(images/ffon1.gif);font-weight:bold;text-align:center;font-size:17px">
+                Ваш ответ&#160; <input type="text" ID="text3" size="5" value="" style="background-color:white" onkeypress="formEnter(event)">
+                <input TYPE="button" name="b1" value="Ok" onClick="formOk()" style="background-color: rgb(230,230,230);font-weight:normal">
+            </td>
+            <td style="width:250px;height:30px;font-weight:bold;text-align:center;font-size:16px;background-image:URL(images/ffon1.gif)" colspan="2">
+                Ширина ямы а, нм &#160;
+                <input type="text" ID="text1" size="5" value="" style="background-color:white"></td>
+        </tr>
+        <tr>
+            <td style="width:213px;height:30px;text-align: center;background-image:URL(images/ffon1.gif);font-weight:bold;text-align:center;font-size:17px">
+                Правильно:&#160;
+                <input style="color:blue;border-style:solid;border-width:0;padding-top:2px;background-image:URL(images/ffon1.gif)" type="text" ID="text4" size="8" value="" readonly></td>
+            <td style="width:250px;height:30px;font-weight:bold;text-align:center;font-size:16px;background-image:URL(images/ffon1.gif)" colspan="2">
+                Глубина ямы U<sub>0</sub>, эВ&#160;
+                <input type="text" ID="text2" size="5" value="" style="background-color:white"></td>
+        </tr>
+    </table>
+    <div style="width:740px;margin: auto;">
+        <INPUT style="display: inline-block;float: left; font-weight: bold; margin-bottom: 2px;margin-top:5px;font-size:20px;font-family:serif;" onclick="windOpen('sqwallH.html')" type="button" value="Справка">
+        <INPUT style="display: inline-block;float: left; font-weight: bold; margin-left: 2px;margin-top:5px;font-size:20px;font-family:serif;" onclick="windTasks(10)" type="button" value="Задачи">
+        <INPUT style="float:right;margin-right: 0px;margin-top:5px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="to_exit()" type="button" value="Выход">
+        <INPUT style="float:right;margin-left: 2px;margin-top:5px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="to_back()" type="button" value="Назад">
+    </div>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

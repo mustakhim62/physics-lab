@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title> Атомный реактор.Упражнение - 1</title>
+    <script type="text/javascript" SRC="./js/reactor1.js"></script>
+    <script type="text/javascript">
+        //================================
+        var atext = new Array();
+        var di = new Array();
+        var ntext = 1;
+        var if_stab = ["стабильно", "радиоактивно"];
+        var texts2 = 'Задание. На рисунке условно изображены ядро и возможные продукты его деления. Укажите, что из них тяжелее, щелкнув мышкой на выбранных ядрах. Весы арретированы. Известно, что это ядро rr ';
+        //=================================
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function formOk() {
+            if (getRight()) refObj("text1").value = "верен!";
+            else refObj("text1").value = "неправильный!";
+            //  prepare_data1();
+            paint1();
+        }
+
+        function formInit() {
+            prepare_data1();
+            str = new String(texts2);
+            ss = str.replace("rr", if_stab[r_a]);
+            refObj("cc").innerHTML = ss;
+            //	if(opener)refObj("tb1").style.margin ="auto";
+            paint1();
+            refObj("text1").value = "";
+        }
+    </script>
+    <link rel=stylesheet href="../css/mysheet.css" type="text/css">
+</head>
+
+<body style="margin-top:0" onload='javascript:formInit()'>
+    <table id="tb1" style="margin-left: 0;width:630px;border:1px solid black;background-image:URL(images/stone.jpg)">
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            <h1 id="h1" style="font-size:25px">Соотношение масс делящегося ядра и осколков</h1>
+                        </td>
+                    </tr>
+                </table>
+                <table style="width:630px;BORDER:5px solid black;background-color:#FFFFFF;margin: auto;">
+                    <tr>
+                        <td style="width:290px;height:230px;background-color:#FFFFE0" rowspan="2">
+                            <canvas id="Canvas1" width="290" height="230">	no Canvas.</canvas>
+                            <script type="text/javascript">
+                                init1();
+                                //prepare_data1();
+                                paint1();
+                            </script>
+                        </td>
+                        <td style="width:320px;height:160px;background-color:#FFFFE0;border:1px solid black">
+                            <div id="cc" style="width:320px;height:160px;visibility: visible;font-size:18px;font-family:san-serif;text-indent: 30px;text-align: justify;margin: 0 10px 0 10px"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:320px;height:70px;background-color:#896235;vertical-align:middle;color:#FFFFE0;font-size:21px;font-style:italic;margin-left: 5px">
+                            Ваш ответ ... &nbsp;
+                            <input style="color:#FFFFE0;font-size:21px;font-style:italic;background-color:#896235;border-style:solid;border-width:0;padding-top:2px" type="text" ID="text1" size="15" value="" readonly>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

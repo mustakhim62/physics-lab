@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <link rel=stylesheet href="../css/mysheet.css" type="text/css">
+    <link rel=stylesheet href="../css/style_wave.css" type="text/css">
+    <link rel=stylesheet href="../css/main.css" type="text/css">
+    <title> Волновые свойства частиц. </title>
+    <style type="text/css">
+        li.w {
+            font-size: 13px;
+            text-align: left;
+            font-weight: bold;
+            color: Navy
+        }
+        
+        td {
+            border: 1px solid black;
+            margin: 0;
+            padding: 0
+        }
+        
+        td.a {
+            border: 0
+        }
+    </style>
+    <script type="text/javascript" SRC="./js/button_gif.js"></script>
+    <script type="text/javascript" SRC="./js/jquery.js"></script>
+    <script type="text/javascript" SRC="./js/wave2.js"></script>
+    <script type="text/javascript" SRC="./js/MathLib.js"></script>
+    <script type="text/javascript" src="./js/flotr2.min.js"></script>
+    <script type="text/javascript" SRC="./js/scrollValue.js"></script>
+    <script type="text/javascript">
+        var angle = 70;
+        var isStop = false;
+        var j = 0;
+        var y = "";
+        var atext = new Array();
+        var di = new Array();
+        var ntext = 1;
+
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function setAngle(dir, name) {
+            change_pic(name, 2);
+            if ((dir > 0) && (angle < 70)) {
+                angle++;
+            }
+            if ((dir < 0) && (angle > 20)) {
+                angle--;
+            }
+            if (!isStop) {
+                begin(); // refObj("W2").
+                isStop = true;
+            }
+            SetAngle1(angle) // refObj("W2").
+        }
+
+        function stopR(name) {
+            change_pic(name, 1);
+        }
+
+        function setColorPoint(n) {
+            setColorPoint2(n);
+        }
+
+        function change_U(U) {
+            setU(U);
+            set_digits(U);
+        }
+
+        function prepareTasks() {}
+
+        function formTasks() {
+            st = new Array("", "V, 10" + '\u00b3' + "км/с =", '\u03BB' + ", нм =", "n =");
+            ntext++;
+            if (ntext == 5) ntext = 1;
+            refObj("tt").innerHTML = texts1[ntext - 1];
+            //  		setText(ntext,"myText");
+            y = getAnswer(ntext);
+            refObj("text6").value = st[ntext - 1];
+            refObj("text5").value = "";
+            refObj("text4").value = "";
+        }
+
+        function formOk() {
+            if ((refObj("text4").value != "") && (ntext > 1)) {
+                refObj("text5").value = "Правильно: " + y;
+            }
+        }
+
+        function init02() {
+            refObj("form1").choice1[1].checked = true;
+            //   refObj("choice1").checked = true;// [1]
+            change_U(50);
+            refObj("text3").value = getD();
+            //   setTimeout('setText(ntext,"myText")',100);
+        }
+
+        function clearGraph() {
+            data1 = [];
+            data2 = [];
+            data3 = [];
+            graph = Flotr.draw(container, [data1, data2, data3], properties);
+        }
+    </script>
+</head>
+
+<body style="background-image: url(images/mybmp.gif);" onLoad="init_count();init02();">
+    <form ID="form1" action="./">
+        <table style="width:730px;margin: auto;border-collapse: collapse;">
+            <tr>
+                <td class="a" colspan=3 style="text-indent:20px">
+                    <INPUT style="float: right;margin-right: 30px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="windTasks(6)" type="button" value="Задачи">
+                    <a HREF="www.html">
+                        <INPUT style="float: right;margin-right: 10px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" type="button" value="Назад">
+                    </a>
+                    <h1 style="color:#0000A0;font-size:30px">Волновые свойства частиц.</h1>
+                </td>
+            </tr>
+            <tr>
+                <td class="a" colspan=3 style="text-indent:20px">
+                    <div style="text-align:justify;margin-left:5px;background-color: #DDDDDD;padding: 5px">
+                        В предлагаемом опыте Вам предстоит проверить наличие волновых свойств у электронов (опыт Дэвиссона и Джермера). Конструкция экспериментальной установки такова, что угол скольжения частиц относительно мишени можно менять в пределах 20 &divide; 70&#176;,
+                        а ускоряющее напряжение - 50 &divide; 100 В.<br> В заключение Вам будет предложено несколько вопросов.
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:291px;height:269px;background-color:#186A6A" rowspan="7">
+                    <canvas id="Canvas2" width="291" height="269">	no Canvas.</canvas>
+                    <script type="text/javascript">
+                        init2();
+                        //paint();
+                    </script>
+                </td>
+                <td style="width:135px;height:59px;background-image:URL(images/paper1.jpg);text-align: center;vertical-align: middle;">
+                    <canvas id="CanvasC" width="135" height="59">no Canvas</canvas>
+                    <script type="text/javascript" src="./js/count.js"></script>
+                </td>
+                <td style="width:302px;height:269px;background-color:#FFFFFF;vertical-align: top;" rowspan="7">
+                    <div id="container" class="container"></div>
+                    <script src="js/myScript.js"></script>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:135px;height:20px;background-image:URL(images/paper1.jpg);text-align: center;font-weight:bold;">
+                    Напряжение, В
+                </td>
+            </tr>
+            <tr>
+                <td style="width:135px;height:20px;background-image:URL(images/paper1.jpg);text-align: center;">
+                    <canvas id="CanvasSc" width="135" height="20">no Canvas</canvas>
+                    <script type="text/javascript">
+                        initSc();
+                        red();
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:135px;height:30px;background-image:URL(images/paper1.jpg);text-align: center;">
+                    <img ID='img_for_up' src="images/up_down0.gif" alt="Увеличить угол" style="float: center;width:31px; HEIGHT:26px; BORDER:0;margin:0;vertical-align: middle;" onMouseDown="setAngle(-1,'img_for_up')" onMouseUp="stopR('img_for_up')" onMouseout="stopR('img_for_up')">
+                    <img ID='img_for_dn' src="images/up_down2.gif" alt="Уменьшить угол" style="float: center;width:31px; HEIGHT:26px; BORDER:0;margin:0;vertical-align: middle;" onMouseDown="setAngle(1,'img_for_dn')" onMouseUp="stopR('img_for_dn')" onMouseout="stopR('img_for_dn')">
+                </td>
+            </tr>
+            <tr>
+                <td style="width:135px;height:60px;background-image:URL(images/paper1.jpg);text-align: center;vertical-align: top;">
+                    <table style="width:135px;border:3px solid black">
+                        <tr>
+                            <td style="width:55px;height:60px;">
+                                <ul style="margin:0;padding:0;font-size:13px;text-align:left;font-weight:bold;color:Navy">
+                                    <li><img src="images/empty.gif" style="width:1px; HEIGHT:1px; BORDER:0;margin:0;vertical-align: top" alt=""><input type="radio" name="choice1" onClick="setColorPoint(1)" style="padding:0"> 1</li>
+                                    <li><img src="images/empty.gif" style="width:1px; HEIGHT:1px; BORDER:0;margin:0;vertical-align: top" alt=""><input type="radio" name="choice1" onClick="setColorPoint(2)"> 2</li>
+                                    <li><img src="images/empty.gif" style="width:1px; HEIGHT:1px; BORDER:0;margin:0;vertical-align: top" alt=""><input type="radio" name="choice1" onClick="setColorPoint(3)"> 3</li>
+                                </ul>
+                            </td>
+                            <td style="width:80px;height:60px;vertical-align: top;">
+                                <div style="font-weight:bold;color:Navy;margin-top:2px">Цвет точек на графике</div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:135px;height:25px;background-image:URL(images/paper1.jpg);font-weight:bold;vertical-align: bottom;">
+                    <p style="text-indent: 10px;display: inline">d, нм =
+                        <input style="font-size:15px;border-style:solid;border-width:0;background-image:URL(images/paper1.jpg);display: inline;margin-left: 1px" type="text" ID="text3" size="6" value="" readonly>&nbsp;</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:135px;height:35px;text-align: center;background-image:URL(images/paper1.jpg)">
+                    <button style="width:90px;color:#0000FF" type="button" onclick="javascript:formTasks()">Задание</button>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:291px;height:120px;background-image:URL(images/paper1.jpg); font-weight:bold;font-size:13px;padding-left:10px;text-align:left;text-indent: 15px">
+                    <div style="text-align:center">СХЕМА УСТАНОВКИ.</div>1. Электронная пушка<br>2. Мишень<br>3. Устройство для поворота мишени<br> 4. Приемный коллектор рассеянных электронов<br>5. Измеритель тока рассеянных электронов
+                </td>
+                <td style="width:437px;height:120px;background-image:URL(images/paper1.jpg);" colspan="2">
+                    <table style="width:437px;border:1px solid black">
+                        <tr>
+                            <td id="myText" rowspan="2" style="width:270px;height:120px;font-size:12px;font-weight: bold;overflow-y:scroll;padding-left:5px;padding-right:3px;text-align: justify;background-color: #DDDDDD">
+                                <div id="tt" style="font-size: 12px;height:120px;padding-left:5px;text-align: left">
+                                </div>
+                            </td>
+                            <td style="width:167px;height:80px;text-align: center;font-weight:bold;font-size:medium">
+                                Ваш ответ<br>
+                                <input style="border-style:solid;border-width:0;font-size:14px;background-image:URL(images/paper1.jpg)" type="text" ID="text6" size="9" value="" readonly><br>
+                                <input type="text" ID="text4" size="6" value="" onkeypress="formEnter(event)">
+                                <input TYPE="button" name="b1" value="Ok" onClick="formOk()" style="background-color:rgb(230,230,230);font-weight:bold;padding:0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:167px;height:40px;background-image:URL(images/paper1.jpg);text-align: center">
+                                <p><input style="color:Navy;font-size:19px;font-style:italic;border-style:solid;border-width:0;background-image:URL(images/paper1.jpg)" type="text" ID="text5" size="15" value="" readonly></p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table style="width:742px;margin: auto;">
+            <tr>
+                <td class="a">
+                    <INPUT style="float: left;margin: 0; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="windOpen('waveH.html')" type="button" value="Справка">
+                    <a HREF="./../atomic.html">
+                        <INPUT style="float: left;margin-left: 5px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" type="button" value="Выход">
+                    </a>
+                    <button id="b4" style="color:#0000AA;width:160px;height:25px;float:left;margin-left: 5px;font-size:16px;font-family:serif;" onclick="javascript:clearGraph();return false;">Очистить график</button>
+                    <INPUT style="float: right;margin-right: 10px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="windTasks(6)" type="button" value="Задачи">
+                    <a HREF="www.html">
+                        <INPUT style="float: right;margin-right: 10px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" type="button" value="Назад">
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <script type="text/javascript">
+        texts1 = ['&nbsp;&nbsp;&nbsp; Исследуйте зависимость тока отраженных электронов от угла скольжения \u03c6. Запишите значения углов, при которых наблюдаются максимумы тока. Измерение проведите при 2-3 начальных значениях энергий электронов. Затем нажмите кнопку "Задание" и ответьте на три вопроса.',
+            '&nbsp;&nbsp;&nbsp;<b>Вопрос</b> 1.<br> Определите скорость движения ( км/с ) электрона  при  текущем   значении напряжения.',
+            '&nbsp;&nbsp;&nbsp;<b>Вопрос</b> 2.<br> Определите дебройлевскую длину волны электрона ( нм ) при текущем значении напряжения.',
+            '&nbsp;&nbsp;&nbsp;<b>Вопрос</b> 3.<br> Определите n в формуле Вульфа-Брэгга для отмеченного максимума при текущем значении напряжения.'
+        ];
+        refObj("tt").innerHTML = texts1[ntext - 1];
+    </script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

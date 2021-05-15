@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+
+<head>
+    <LINK REL=PARENT HREF="index.html">
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1251">
+    <SCRIPT type="text/javascript">
+        var number = 0;
+
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function initScroll() {
+            var s = "no";
+            if (screen.width < 800) s = "yes";
+            refObj("f1").setAttribute("scrolling", s);
+            refObj("f2").setAttribute("scrolling", "auto");
+        }
+
+        function init() {
+            if (screen.width > 800) {
+                refObj("frs").cols = "110,119,*,110";
+            }
+            initScroll();
+        }
+    </SCRIPT>
+    <title>Опыт Франка и Герца.</title>
+</head>
+<frameset ID="frs" cols="0,119,*,0" border="3" onload="init()" frameborder="0" framespacing="0">
+    <frame src="gap.html" noresize scrolling="no">
+        <frame ID="f1" src="menu.html" noresize scrolling="no">
+            <frame ID="f2" src="frank0.html" name="pole" noresize>
+                <frame src="gap.html" noresize scrolling="no">
+</frameset>
+
+</html>

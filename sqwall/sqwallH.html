@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <link rel=stylesheet href="../css/mysheet.css" type="text/css">
+    <title>Справка</title>
+</head>
+
+<body style="background-color: #FFFBCC">
+    <A id="pit">
+    </a>
+    <table style="width:550px;margin: auto;">
+        <tr>
+            <td>
+                <h3 style="color:#0000FF">ДВИЖЕНИЕ МИКРОЧАСТИЦЫ В ПОТЕНЦИАЛЬНОЙ ЯМЕ</h3>
+                <p class="H">
+                    Основу квантовой механики составляет утверждение, что состояние микрочастицы может быть описано определенной функцией координат &#936;(x), называемой волновой функцией. Вероятность dp того, что микрочастица будет обнаружена в объеме dV, равна dp=&#124;&#936;&#124;
+                    <span style="vertical-align:super">2</span>dV. Для связанного состояния полная энергия частицы Е &#60; 0. Рассмотрим одномерное движение в прямоугольной потенциальной яме: U(x)=0 при 0 &lt; x &lt; a, U(x)=U
+                    <sub>0</sub> при x &lt; 0, x &gt; a. В области <br>0 &lt; x &lt; a уравнение Шредингера имеет вид</p>
+                <pre>
+d<span style="vertical-align:super">2</span>&#936;      2m
+                                          ------  +  ----  E•&#936;=0,                       (1)
+dx<span style="vertical-align:super">2</span>        &#1115;<span style="vertical-align:super">2</span>
+ <span style="font-weight: normal;">а в области вне ямы</span>
+d<span style="vertical-align:super">2</span>&#936;     2m
+                                           ----- + ---- (E-U<span style="vertical-align:sub">0</span>)•&#936;=0                   (2)
+dx<span style="vertical-align:super">2</span>      &#1115;<span style="vertical-align:super">2</span>
+	  </pre>
+                <p class="H">
+                    При x = 0, x = a решения этих уравнений должны переходить друг в друга непрерывно с непрерывной производной, а при x = + &#8734; решение уравнения (2) должно обращаться в нуль. Последнему требованию удовлетворяет функция</p><pre>       1
+            &#936; = c<span style="vertical-align:sub">1</span>exp( +k<span style="vertical-align:sub">1</span>•x ),   k<span style="vertical-align:sub">1</span> = ---sqrt( 2•m•(U<span style="vertical-align:sub">0</span>-E)               (3)
+        &#1115;</pre>
+                <p class="H">
+                    ( знаки + и - соответственно для областей x &#60; 0 и x &#62; a ). Внутри ямы решение (1) ищем в виде</p><pre>
+       1
+            &#936; = c<span style="vertical-align:sub">2</span>sin( +k•x+d ),   k = ---sqrt( 2•m•E )                     (4)
+       &#1115;</pre>
+                <p class="H">
+                    Условия непрерывности приводят к</p><pre>
+       &#960;n-k•a          &#1115;•k
+                                        sin --------  =  ----------,   n=1, 2, 3,... .    (5)
+                   2            sqrt(2mU<span style="vertical-align:sub">0</span>)</pre>
+                <p class="H">
+                    Корни уравнения (5) позволяют найти уровни энергии</p><pre>
+       h<span style="vertical-align:super">2</span>                              k•a
+                         Е = -------- Y<span style="vertical-align:super">2</span>,         где  Y = ----- .                        (6)
+2&#960;<span style="vertical-align:super">2</span>ma<span style="vertical-align:super">2</span>                             2</pre>
+                <p class="H"> Трансцендентное уравнение (5) относительно k решают численно. Определив один из корней этого уравнения k<sub>1</sub>, рассчитываем E<sub>1</sub>. Константа c<sub>1</sub> может быть выражена через c<sub>2</sub> (из равенства волновых функций
+                    при x = 0)
+                    <span style="font-weight: bold;">   c<sub>1</sub> = c<sub>2</sub>sin(d).</span>
+                </p>
+                <p class="H">
+                    Из условия нормировки: интеграл по всему пространству квадрата &#124;&#936;&#124;<span style="vertical-align:super">2</span> равен единице</p><pre>
+   +&#8734;
+                      &#8747;   &#124;&#936;&#124;<span style="vertical-align:super">2</span>dx = 1
+   -&#8734;</pre>
+                <span style="font-weight: normal;">- находится последняя константа c<sub>2</sub>.</span>
+                <p class="H"> Вероятность P обнаружить частицу в интервале x<sub>1</sub> &#60; x &#60; x<sub>2</sub> вычисляется интегрированием квадрата волновой функции &#124;&#936;&#124;<span style="vertical-align:super">2</span> от x
+                    <sub>1</sub> до x<sub>2</sub>.</p><pre>
+ x<span style="vertical-align:sub">2</span>
+     P = &#8747;  &#124;&#936;&#124;<span style="vertical-align:super">2</span>dx.
+ x<span style="vertical-align:sub">1</span></pre>
+                <p class="H">Для потенциальной ямы бесконечной глубины ( U<sub>0</sub> = &#8734; )</p><pre>
+h<span style="vertical-align:super">2</span>
+                      Е =  ------ n<span style="vertical-align:super">2</span>,     n=1, 2, 3,...
+8ma<span style="vertical-align:super">2</span>
+                                     &#960;n
+             &#936; = sqrt (2/a)sin(---- x).
+                                     a</pre>
+
+                <p><a HREF="#pit">вверх</a></p>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

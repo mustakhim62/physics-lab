@@ -1,0 +1,331 @@
+﻿<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1251">
+    <link rel=stylesheet href="mysheet.css" type="text/css">
+    <title> Излучение атомов водорода </title>
+    <script type="text/javascript" SRC="./js/button_gif.js"></script>
+    <script type="text/javascript" SRC="./js/levels.js"></script>
+    <script type="text/javascript">
+        var ntext = 1;
+        var answ;
+        var isLoad = false;
+        var dtop;
+        var dleft;
+
+        function formStart() {
+            if (ntext < 4) {
+                document.H1.startM();
+                document.SP.setScale(0);
+                document.SP.setActiv0("true");
+                showLambda();
+            }
+        }
+
+        function formStop() {
+            document.H1.stopM();
+            document.SP.setActiv0("false");
+        }
+
+        function doLoad() {
+            for (var i = 0; i < 2; i++) {
+                dtop = 46 + i * 312 + parseInt(t1.offsetTop);
+                dleft = 261 + i * 327 + parseInt(t1.offsetLeft);
+                document.images(5 - 2 * i).style.top = dtop;
+                document.images(5 - 2 * i).style.left = dleft;
+            }
+            isLoad = true;
+        }
+
+        function showLambda() {
+            if ((isLoad) && (ntext == 1)) document.form1.text1.value = document.SP.getLambda() + " нм";
+            else document.form1.text1.value = "";
+        }
+
+        function showE() {
+            if ((isLoad) && (ntext != 6)) document.form1.text37.value = document.LV.getE();
+        }
+
+        function shiftSpectr(name, dir) {
+            if (ntext == 1) {
+                change_pic(name, 2);
+                document.SP.startM(dir);
+            }
+        }
+
+        function stopSpectr(name) {
+            if (ntext == 1) {
+                change_pic(name, 1);
+                document.SP.spectr_stop();
+            }
+        }
+
+        function changeScale() {
+            document.LV.hideTransition();
+            document.SP.changeScale();
+        }
+
+        function formTasks() {
+            document.Show.replaceText();
+            refreshTasks();
+        }
+
+        function refreshTasks() {
+            var dt4 = document.form1.text4;
+            document.form1.text1.value = "";
+            dt4.value = "";
+            document.form1.text5.value = "";
+            ntext = document.Show.getNtext();
+            dt4.disabled = false;
+            dt4.focus();
+            document.Show.prepareText(ntext);
+            answ = document.Show.getAnswer();
+            if (ntext > 3) formStop();
+            if (ntext < 6) {
+                document.LV.setNotice(true);
+                document.form1.text37.value = "";
+            } else document.LV.setNotice(false);
+            if (ntext == 8) document.form1.text37.value = "";
+            document.LV.hideTransition();
+            n1 = document.Show.getN1();
+            if (ntext == 6) document.LV.changeColor(n1);
+            n2 = document.Show.getN2();
+            if ((ntext > 1) && (ntext < 4)) {
+                document.SP.setScale(0);
+                document.SP.set_lambda(n1, n2);
+            }
+            if (((ntext > 1) && (ntext < 4)) || (ntext == 7) || (ntext == 8))
+                document.LV.setTransition(n1, n2, document.Show.getZ());
+            if (ntext == 9) {
+                document.H1.setShowTab(true);
+                dt4.disabled = true;
+            } else {
+                document.H1.setShowTab(false);
+            }
+            document.SC.setNumber(ntext - 1);
+        } //formTasks
+        function empty5() {
+            document.form1.text5.value = "";
+        }
+
+        function formOk() {
+            if ((document.form1.text4.value != "") && (ntext > 1) || (ntext == 9)) {
+                if (ntext != 8) s = "Правильно: ";
+                else s = "";
+                document.form1.text5.value = s + answ;
+                if (ntext != 8) setTimeout("refreshTasks()", 3000);
+            } else if (ntext != 1) {
+                document.form1.text5.value = "А где же ответ?";
+                setTimeout("empty5()", 1000);
+            }
+        }
+    </script>
+</head>
+
+<body background="images/WinBack.jpg" onLoad="doLoad()" onresize="doLoad()">
+    <table width="740">
+        <tr>
+            <td>
+                <img SRC="images/button_problems.gif" WIDTH="60" HEIGHT="24" BORDER="0" ALT="Задачи" align="right" onClick="windTasks(3)">
+                <a HREF="#begin"><img SRC="images/hand_b.gif" WIDTH="32" HEIGHT="32" BORDER="0" ALT="Начало работы " align="right"></a>
+                <a HREF="atomic.html"><img SRC="images/exit.gif" WIDTH="42" HEIGHT="24" BORDER="0" ALT="Главное меню" align="right"> </a>
+                <h1 style="color: #0000FF;">Излучение атома водорода</h1>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <div style="text-align:justify">
+                    Экспериментальная установка состоит из трубки (кварцевое стекло !), наполненной исследуемым газом, высоковольтного преобразователя (катушки Румкорфа) и спектрографа с уникальной характеристикой, позволяющей наблюдать спектр от ультрафиолета до далекой
+                    инфракрасной области (90 &#126; 5000 нм). При замыкании ключа в цепи питания высокое напряжение подается на трубку, и в ней возникает газовый разряд. Излучение атомов газа разлагается в спектр. . Линии ультрафиолетового и инфракрасного
+                    диапазона, невидимые для человека, условно изображены пунктиром. Вы можете по своему желанию изменить масштаб изображения (разрешающую способность) спектрографа, измерить длину волны любой линии, смещая спектр, так, чтобы эта линия
+                    разместилась над указателем. При необходимости можно измерить и энергию атома в разных состояниях. Начните с нажатия кнопки "Старт".</div>
+            </td>
+        </tr>
+    </table>
+    <form name="form1" action="./">
+        <A NAME="begin">
+        </a>
+        <table width="727" BORDER="1" ID="t1" CELLSPACING="0" CELLPADDING="0">
+            <tr>
+                <td width="570" height="40" colspan="3" bgcolor="#000000">
+                    <!--applet   codebase="./" code="spectr.class" NAME="SP" width="570" height="40" MAYSCRIPT>
+           <param name="nameF" value="showLambda">
+  </applet-->
+                </td>
+                <td width="150" height="386" rowspan="4" bgcolor="#000000">
+                    <table width="150" CELLSPACING="0" CELLPADDING="0">
+                        <tr>
+                            <td width="150" height="356">
+                                <canvas id="Canvas3" width="150" height="356">	no Canvas.</canvas>
+                                <script type="text/javascript">
+                                    init();
+                                    paintL();
+                                </script>
+                                <!--applet codebase="./" code="levels.class" NAME="LV" width="150" height="356" MAYSCRIPT>
+       <param name="Image1" value="images/eV.gif">
+       <param name="Image2" value="images/pointer1.gif">
+       <param name="nameF" value="showE">
+  </applet-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="150" height="30" align="center" valign="middle">
+                                <input type="text" name="text37" size="13" readonly value="" align="left" style="background-color:#E7FFFF;border-style:none;font-family:Arial;font-size:12">
+                                <img style="position:absolute;top:643;left:600" src="images/tabloH1.gif" WIDTH="120" HEIGHT="30" VSPACE="0" HSPACE="0"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td width="570" height="26" colspan="3" align="center" bgcolor="#DDDDDD">
+                    <table width="570" CELLSPACING="0" CELLPADDING="0" border="1">
+                        <tr>
+                            <td width="68" height="26">
+                                <!--applet   codebase="./" code="myButton.class" NAME="b3" width="68" height="26" MAYSCRIPT align="left">
+           <param name="label" value="Масштаб">
+           <param name="nameF" value="changeScale">
+           <param name="fontSize" value="14">
+           <param name="colorRGB" value="0000FF">
+           </applet-->
+                            </td>
+                            <td width="155">&nbsp;</td>
+                            <td width="31" height="26">
+                                <img name='img_for_button1' VSPACE="0" HSPACE="0" src="images/left_right0.gif" WIDTH="31" HEIGHT="26" ALT="Влево" BORDER="0" VSPACE="0" onMouseDown="shiftSpectr('img_for_button1',1)" onMouseUp="stopSpectr('img_for_button1')" onmouseout="stopSpectr('img_for_button1')"></td>
+                            <td width="120" align="center" bgcolor="#E7FFFF"><input type="text" name="text1" size="11" readonly value="" style="background-color:#E7FFFF;border:none;text-align:center;font-style:Times;font-size:15;padding-left:10">
+                                <img style="position:absolute;top:331;left:287" src="images/tabloH.gif" WIDTH="120" HEIGHT="26" VSPACE="0" HSPACE="0"></td>
+                            <td width="31"><img name='img_for_button2' VSPACE="0" HSPACE="0" SRC="images/left_right2.gif" WIDTH="31" HEIGHT="26" ALT="Вправо" BORDER="0" onMouseDown="shiftSpectr('img_for_button2',-1)" onMouseUp="stopSpectr('img_for_button2')" onmouseout="stopSpectr('img_for_button2')"></td>
+                            <td width="155">&nbsp;</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td width="570" height="200" colspan="3" bgcolor="#000000">
+                    <!--applet  codebase="./" code="hydrogen.class" NAME="H1" width="570" height="200" MAYSCRIPT>
+           <param name="Image1" value="images/atomH.gif">
+           <param name="Image2" value="images/rrr1.gif">
+           <param name="Image3" value="images/tubenH.gif">
+           <param name="Image4" value="images/galo.gif">
+           <param name="nameF" value="formOk">
+           </applet-->
+                </td>
+            </tr>
+            <tr>
+                <td width="290" height="110" bgcolor="#FFFFF8">
+                    <!--applet codebase="./" code="ShowTextsH.class" NAME="Show" width="290" height="110">
+           <param name="TextName" value="hydrogen.txt">
+           <param name="nstop" value="9">
+           <!--param name="noScrollVert" value="true"-->
+                    <param name="colorRGB" value="FFFFF8">
+                    <param name="nstart" value="1">
+                    <param name="fontSize" value="13">
+                    <param name="justification" value="3">
+                    </applet-->
+                </td>
+                <td width="75" height="110" bgcolor="#DDDDDD" valign="middle">
+                    <table width="75" CELLSPACING="0" CELLPADDING="0">
+                        <tr>
+                            <td width="75" height="26" align="center">
+                                <!--applet codebase="./" code="myButton.class" NAME="b5" width="68" height="26" MAYSCRIPT align="middle">
+           <param name="label" value="Старт">
+           <param name="nameF" value="formStart">
+           <param name="fontSize" value="14">
+           <param name="colorRGB" value="FF0000">
+           </applet-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="75" height="26" align="center">
+                                <!--applet codebase="./" code="myButton.class" NAME="b6" width="68" height="26" MAYSCRIPT align="middle">
+           <param name="label" value="Задание">
+           <param name="nameF" value="formTasks">
+           <param name="fontSize" value="14">
+           <param name="colorRGB" value="0000FF">
+           </applet-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="75" height="26" align="center">
+                                <!--applet codebase="./" code="myButton.class" NAME="b4" width="68" height="26" MAYSCRIPT align="middle">
+           <param name="label" value="Стоп">
+           <param name="nameF" value="formStop">
+           <param name="fontSize" value="14">
+           <param name="colorRGB" value="FF0000">
+           </applet-->
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="200" height="110" valign="top">
+                    <table width="200" border="0" CELLSPACING="0" CELLPADDING="0">
+                        <tr>
+                            <td width="200" height="80" valign="top">
+                                <TABLE WIDTH="200" CELLSPACING="0" CELLPADDING="0" ALIGN="CENTER" BORDER="0">
+                                    <TR>
+                                        <TD WIDTH="196">
+                                            <TABLE CELLSPACING="0" WIDTH="196" ALIGN="CENTER" BORDER="0">
+                                                <TR>
+                                                    <TD BGCOLOR="#0E5E9E" valign="middle" align="center" height="40">
+                                                        <p style="color:#FFFFFF;font-size:20">
+                                                            Ваш ответ
+                                                        </p>
+                                                    </TD>
+                                                </TR>
+                                                <TR>
+                                                    <TD BGCOLOR="#DDDDDD" STYLE="padding:3" align="center" valign="bottom">
+                                                        <!--applet    codebase="./" code="showChar.class" NAME="SC" width="60" height="21" >
+           <param name="colorRGB" value="DDDDDD">
+           <param name="name0" value="">
+           <param name="name1" value="&#955;, нм =">
+           <param name="name2" value="h&#957;, эВ =">
+           <param name="name3" value="  m =">
+           <param name="name4" value="  n =">
+           <param name="name5" value="E, эВ =">
+           <param name="name6" value="h&#957;, эВ =">
+           <param name="name7" value="">
+           <param name="name8" value="">
+	   <param name="justification" value="1">
+           </applet-->
+                                                        <input type="text" name="text4" size="5" value="" onkeypress="formEnter()">&nbsp; &nbsp;
+                                                        <input TYPE="button" name="b1" value="Ok" onClick="formOk()" style="background-color:rgb(192,192,192)">
+                                                    </TD>
+                                                </TR>
+                                            </TABLE>
+                                        </TD>
+                                        <TD WIDTH="4" VALIGN="TOP" BGCOLOR="#606060">
+                                            <img src="images/noshad.gif" height="3" width="4" align="top" VSPACE="0" HSPACE="0">
+                                        </TD>
+                                    </TR>
+                                    <TR>
+                                        <TD COLSPAN="2" BGCOLOR="#606060" width="200">
+                                            <img src="images/noshad.gif" height="4" width="4" vspace="0" VSPACE="0" HSPACE="0">
+                                            <BR>
+                                        </TD>
+                                    </TR>
+                                </TABLE>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="200" height="30" BGCOLOR="#0E5E9E" align="center">
+                                <input type="text" name="text5" size="18" readonly value="" style="background-color:#0E5E9E;border-style:none;color:#FFFFFF;font-size:19">
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table width="740">
+            <tr>
+                <td>
+                    <p>
+                        <img SRC="images/question.gif" WIDTH="60" HEIGHT="24" BORDER="0" ALT="Справка" align="left" onClick="windOpen('hydrogenH.html')">
+                        <img SRC="images/button_problems.gif" WIDTH="60" HEIGHT="24" BORDER="0" ALT="Задачи" align="right" onClick="windTasks(3)">
+                        <a HREF="atomic.html"><img SRC="images/exit.gif" WIDTH="42" HEIGHT="24" BORDER="0" ALT="Главное меню" align="right"></a>
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+
+</html>

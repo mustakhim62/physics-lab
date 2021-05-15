@@ -1,0 +1,8 @@
+.container {
+    color: #000;
+    margin: 20px auto;
+    overflow: hidden;
+    position: relative;
+    width: 302px;
+    height: 269px;
+}

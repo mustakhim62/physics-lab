@@ -1,0 +1,265 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <link rel=stylesheet href="./css/mysheet.css" type="text/css">
+    <style type="text/css">
+        td {
+            border: 1px solid black;
+        }
+    </style>
+    <title>Опыт Франка и Герца 3</title>
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <script type="text/javascript" SRC="./js/frankLib.js"></script>
+    <script type="text/javascript" SRC="./js/load.js"></script>
+    <script type="text/javascript" SRC="./js/frank2.js"></script>
+    <script type="text/javascript" SRC="./js/levelsF.js"></script>
+    <script type="text/javascript" SRC="./js/spectrF.js"></script>
+    <script type="text/javascript">
+        var pics_count = Array();
+        today = new Date();
+        etime = today.getTime();
+        dt = 5000;
+        var dtop;
+        var dleft;
+        var current_gaz;
+        var nFirstEnergy = -1;
+        var atext = new Array();
+        var di = new Array();
+        var ntext = 3;
+
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function formEnter(e) {
+            if (!e) {
+                e = window.event;
+                if (e.keyCode == 13) formOk();
+            }
+        }
+
+        function formStart() {
+            setText(ntext, "myText");
+            setTimeout("startM2()", 100);
+            startF2();
+            startF3();
+            setText(ntext, "myText");
+            set_icase(3); //	clear();
+            ntext = 3;
+        }
+
+        function formOk() {
+            if ((refObj("text4").value != "") /*&&getFlash()*/ ) {
+                refObj("text1").value = getAnswer(ntext - 1);
+                if (ntext == 4) {
+                    setFlash();
+                    startNew();
+                    //		startM2();
+                } else {
+                    refObj("text4").focus();
+                }
+                setTimeout("clear()", 2000);
+                //	 refObj("Show").replaceText();
+            }
+        }
+
+        function clear() {
+            if (ntext < 4) ntext++;
+            else ntext = 3;
+            setText(ntext, "myText");
+            refObj("text4").value = "";
+            refObj("text1").value = "";
+        }
+
+        function formInit() {
+            dtop = 107 + parseInt(document.all("t1").offsetTop);
+            dleft = 433 + parseInt(document.all("t1").offsetLeft);
+            refObj("e1").style.top = dtop;
+            refObj("e1").style.left = dleft;
+            pics_count = new Array(2);
+            pics_count[0] = new Image();
+            pics_count[0].src = "images/empty.gif";
+            pics_count[1] = new Image();
+            pics_count[1].src = "images/eyes11.gif";
+            if (parent.refObj("f1") != null) runTime();
+            setOnOff();
+        }
+
+        function change_eyes(n) {
+            if (n == 0) refObj("e1").src = pics_count[0].src;
+            else refObj("e1").src = pics_count[1].src;
+        }
+
+        function runTime() {
+            today0 = new Date();
+            t = today0.getTime();
+            if (t > etime + dt) {
+                etime = t;
+                if (dt > 1000) {
+                    dt = 300;
+                    change_eyes(1);
+                } else {
+                    dt = 10000 + Math.floor(Math.random() * 5000);
+                    change_eyes(0);
+                }
+            }
+            id = setTimeout("runTime()", 100);
+        }
+    </script>
+</head>
+
+<body style="margin-top:0;margin-left:0" onload="OnLoad();OnRequestStateChange();formStart()">
+    <table style="text-align: left;width:650px;height:450px;border-style:solid;border-width:1;background-image:URL(images/WinBack.jpg)">
+        <tr>
+            <td style="width:650px;border: 0">
+                <table style="width:650px;">
+                    <tr>
+                        <td style="border: 0">
+                            <div style="color:#0e5e9e;font-size:22px;text-align: center;">Исследование спектра излучения возбужденных атомов</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;border: 0">
+                            <div style="font-style:italic;font-size:17px;color:#0C3e9e">
+                                Изменяйте ускоряющее напряжение от нуля до <span style="font-weight:bold;color:blue">максимума</span> и дайте ответы на предлагаемые вопросы.
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table style="width:650px;border-collapse: collapse;" ID="t1">
+                    <tr>
+                        <td style="width:230px;height:270px;background-color:#ded6c6">
+                            <canvas id="Canvas2" width="230" height="270"> no Canvas.</canvas>
+                            <script type="text/javascript">
+                                init2();
+                            </script>
+                        </td>
+                        <td style="width:230px;height:270px;background-color:#F8FCFF">
+                            <table style="width:230px;border:0">
+                                <tr>
+                                    <td style="width:230px;height:139px;background-image:URL(images/WinBack.jpg)">
+                                        <img SRC="images/frank3.gif" style="width:230px; HEIGHT:139px; BORDER:0;margin:5px 5px 5px 5px" alt="">
+                                        <img ID="e1" style="position:absolute;top:228px;left:472px;width:39px; HEIGHT:22px; BORDER:0;" src="images/empty.gif" alt="eye">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width:230px;border:0;">
+                                <tr>
+                                    <td style="width:230px;height:121px;">
+                                        <table style="width:230px;text-align: left">
+                                            <tr>
+                                                <td id="myText" style="width:230px;text-align: left;HEIGHT:64px;text-align: center;">
+                                                    <div id="cc" style="width:230px;height:64px;font-size:10px;font-weight: bold;overflow-y: scroll;visibility: hidden;">
+                                                    </div>
+                                                    <script type="text/javascript">
+                                                        function Load(url) { //загрузка текста
+                                                            $('#cc').load(url, function(response) {
+                                                                all_text = $dd = response;
+                                                                //prepareTasks();
+                                                                atext = all_text.split("\n");
+                                                                //atext=$dd=response.split("\n");
+                                                                di = atext[0].split(" ");
+                                                                //alert("Load all_text="+all_text)
+                                                            });
+                                                        }
+
+                                                        function cng_text() {
+                                                            //	teta_ask=Math.round(rand(30))+50;
+                                                            Load('./data/frank_UTF.txt');
+                                                            //	Load('http://localhost/teachmen/work/atomic_new/frank/data/frank_UTF.txt');
+                                                        }
+                                                        cng_text();
+
+                                                        function setText(n, target) {
+                                                            //alert("setText n= "+n+" target= "+target+" di.length= "+di.length)
+                                                            if (n > di.length) return;
+                                                            s = 0;
+                                                            for (i = 0; i < n - 1; i++) s = s + parseInt(di[i]);
+                                                            nstart = (n == 1) ? 1 : s + 1;
+                                                            nend = nstart + parseInt(di[n - 1]);
+                                                            str = "";
+                                                            for (i = nstart; i < nend; i++) {
+                                                                //		sst="";//atext[i].replace("99",String(teta_ask));
+                                                                //		str=str+sst;
+                                                                str = str + atext[i];
+                                                            }
+                                                            refObj(target).innerHTML = str;
+                                                        }
+                                                    </script>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:230px;height:57px;text-align: left;border:0">
+                                                    <table style="width:230px;text-align: left;border:0;background-color:#0e5e9e">
+                                                        <tr>
+                                                            <td style="width:115px;height:20px;text-align: left;border:0;font-weight:bold;color:#FFFFFF">
+                                                                Ваш ответ<br>&nbsp;
+                                                                <input type="text" ID="text4" size="2" value="" onkeypress="formEnter(event)">
+                                                                <input TYPE="button" id="b1" value="Ok" onClick="formOk()" style="background-color: rgb(230,230,230);font-weight:normal;">
+                                                            </td>
+                                                            <td style="width:115px;height:35px;text-align: center">
+                                                                <p class="H" style="padding-bottom:6px;font-weight:bold;color:#FFFFFF;text-align:center;text-indent:0px">
+                                                                    Правильно</p>
+                                                                <input style="color:#FFFFFF;border-style:solid;border-width:1px;border-color:#0e5e9e;padding-top:2px;background-color:#0e5e9e" type="text" ID="text1" size=6 value="" readonly>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width:170px;height:270px;border:0;background-color:#000000">
+                            <canvas id="Canvas3" width="170" height="270"> no Canvas.</canvas>
+                            <script type="text/javascript">
+                                init3();
+                                setTimeout("paint3()", 100);
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:650px;height:30px;background-image:URL(images/wb00m.jpg);text-align: center;" colspan=3>
+                            <div style="font-style:italic;font-size:20px;color:#0E5E9E">Наблюдаемый спектр</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:650px;height:70px;background-image:URL(images/wb00m.jpg)" colspan=3>
+                            <canvas id="Canvas5" width="650" height="70">no Canvas.</canvas>
+                            <script type="text/javascript">
+                                init5();
+                            </script>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript>
+		<div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div>
+	</noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

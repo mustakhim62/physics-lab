@@ -1,0 +1,212 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <link rel=stylesheet href="./css/mysheet.css" type="text/css">
+    <link rel=stylesheet href="./css/style.css" type="text/css">
+    <style type="text/css">
+        td {
+            border: 1px solid black;
+        }
+    </style>
+    <title>Опыт Франка и Герца </title>
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <script type="text/javascript" SRC="./js/frankLib.js"></script>
+    <script type="text/javascript" SRC="./js/load.js"></script>
+    <script type="text/javascript" SRC="./js/frank2.js"></script>
+    <script type="text/javascript" SRC="./js/levelsF.js"></script>
+    <script type="text/javascript" SRC="./js/firing.js"></script>
+    <script type="text/javascript" SRC="./js/spectrF.js"></script>
+    <script type="text/javascript">
+        var current_gaz;
+        var nFirstEnergy = -1;
+        var atext = new Array();
+        var di = new Array();
+        var ntext = 1;
+
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function formStart() {
+            setText(ntext, "myText");
+            startM2();
+            refObj("text1").value = "";
+            refObj("text4").disabled = false;
+            refObj("text4").value = "";
+            set_icase(2); //	clear();
+        }
+
+        function formOk() {
+            if ((refObj("text4").value != "") && (getOnOff())) { //!=false
+                if (ntext < 3) refObj("text1").value = getAnswer(ntext - 1);
+                if (ntext == 2) {
+                    setFlash();
+                    startNew();
+                    refObj("text4").disabled = true;
+                } else refObj("text4").focus();
+                setTimeout("clear()", 2000);
+            }
+        }
+
+        function formEnter(e) {
+            if (!e) {
+                e = window.event;
+                if (e.keyCode == 13) formOk();
+            }
+        }
+
+        function clear() {
+            if (ntext < 2) ntext++;
+            else ntext = 1;
+            setText(ntext, "myText");
+            refObj("text1").value = "";
+            refObj("text4").value = "";
+        }
+    </script>
+</head>
+
+<body style="margin-top:0;margin-left:0" onload="OnLoad();OnRequestStateChange();startF2()">
+    <table style="text-align: left;width:650px;height:450px;border-style:solid;border-width:1;background-image:URL(images/WinBack.jpg)">
+        <tr>
+            <td style="width:650px;">
+                <table style="width:650px;border:1px solid black;border-collapse: collapse;">
+                    <tr>
+                        <td style="width:230px;height:270px;background-color:#ded6c6">
+                            <canvas id="Canvas2" width="230" height="270"> no Canvas.</canvas>
+                            <script type="text/javascript">
+                                init2();
+                            </script>
+                        </td>
+                        <td style="width:230px; height:270px;border:0;background-image:URL(images/wb00m.jpg)">
+                            <table style="width:230px;border-collapse: collapse;border:0">
+                                <tr>
+                                    <td style="border:0">
+                                        <p style="text-align:justify;font-size:14px;padding-left: 2px;padding-right: 2px">
+                                            Внутренняя энергия атома изменяется ступенями. В первом опыте Вы нашли только одну величину ступени. Теперь из-за малости давления паров металла в колбе электрон может отдать энергию только одному атому. Определите, при каких значениях энергии электронов
+                                            возможна передача энергии атомам данного вещества.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:230px;height:30px;text-align: center;border:0">
+                                        <!--table width="230">
+  <tr>
+  <td  width="230" height="30" align="center"-->
+                                        <button style="width:68px;color:#AA0000" type="button" onclick="javascript:formStart()">Старт</button>
+                                    </td>
+                                    <!--/table>
+  </td-->
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width:170px;height:270px;background-color: #000000">
+                            <canvas id="Canvas3" width="170" height="270"> no Canvas.</canvas>
+                            <script type="text/javascript">
+                                init3();
+                                paint3();
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:230px;height:121px;">
+                            <table style="width:230px;background-color:#FFFFF8;border:0;text-align: left;">
+                                <tr>
+                                    <td id="myText" style="width:230px;HEIGHT:64px;text-align: left;font-size:14px;font-weight: bold;overflow-y: scroll;">
+                                        <div id="cc" style="width:230px;height:64px;font-size:10px;font-weight: bold;overflow-y: scroll;visibility: hidden;">
+                                        </div>
+                                        <script type="text/javascript">
+                                            function Load(url) { //загрузка текста
+                                                $('#cc').load(url, function(response) {
+                                                    all_text = $dd = response;
+                                                    //prepareTasks();
+                                                    atext = all_text.split("\n");
+                                                    //atext=$dd=response.split("\n");
+                                                    di = atext[0].split(" ");
+                                                    //alert("Load all_text="+all_text)
+                                                });
+                                            }
+
+                                            function cng_text() {
+                                                //	teta_ask=Math.round(rand(30))+50;
+                                                Load('./data/frank_UTF.txt');
+                                                //	Load('http://localhost/teachmen/work/atomic_new/frank/data/frank_UTF.txt');
+                                            }
+                                            cng_text();
+
+                                            function setText(n, target) {
+                                                //alert("setText n= "+n+" target= "+target)
+                                                if (n > di.length) return;
+                                                s = 0;
+                                                for (i = 0; i < n - 1; i++) s = s + parseInt(di[i]);
+                                                nstart = (n == 1) ? 1 : s + 1;
+                                                nend = nstart + parseInt(di[n - 1]);
+                                                str = "";
+                                                for (i = nstart; i < nend; i++) {
+                                                    //		sst="";//atext[i].replace("99",String(teta_ask));
+                                                    //		str=str+sst;
+                                                    str = str + atext[i];
+                                                }
+                                                refObj(target).innerHTML = str;
+                                            }
+                                        </script>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:230px;height:57px;text-align: left;">
+                                        <table style="width:230px;background-color:#0e5e9e;border:0;text-align: left;">
+                                            <tr>
+                                                <td style="text-align: center;width:115px; height:20px;font-weight:bold;color:#FFFFFF">Ваш ответ
+                                                    <br>&nbsp;
+                                                    <input disabled type="text" ID="text4" size=2 value="" onkeypress="formEnter(event)">
+                                                    <input TYPE="button" name="b1" value="Ok" onClick="formOk()" style="background-color:rgb(230,230,230);font-weight:normal;padding:0">
+                                                </td>
+                                                <td style="width:115px;height:35px;text-align: center">
+                                                    <p class="H" style="padding-bottom:6px;font-weight:bold;color:#FFFFFF;text-align:center;text-indent:0">
+                                                        Правильно</p>
+                                                    <input style="color:#FFFFFF;border-style:solid;border-width:1px;padding-top:2px;background-color:#0e5e9e;border-color:#0e5e9e" type="text" ID="text1" size=6 value="" readonly>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width:420px;height:121px;background-color:#000000;border-top: solid;border-top-color: white" colspan=2>
+                            <canvas id="Canvas4" width="420" height="121"> no Canvas.</canvas>
+                            <script type="text/javascript">
+                                init4();
+                                paint4();
+                            </script>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript>
+    <div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div>
+  </noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

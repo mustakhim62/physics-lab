@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title> Атомный реактор.Упражнение - 3</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/mysheet.css">
+    <style type="text/css">
+        td {
+            border: 1px solid black;
+        }
+        /*td.a{border:0px;margin: 0px;padding: 0px;}*/
+    </style>
+    <script type="text/javascript" SRC="./js/reactor3.js"></script>
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <script type="text/javascript" src="./js/jquery.flot.js"></script>
+    <script type="text/javascript" src="./js/jquery.flot.symbol.js"></script>
+    <script type="text/javascript" src="./js/jquery.flot.axislabels.js"></script>
+    <script type="text/javascript">
+        var d1 = [];
+
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function inside(x, xmin, xmax) {
+            if (x < xmin) return xmin;
+            else if (x > xmax) return xmax;
+            else return x;
+        }
+
+        function formStart() {
+            k = inside(refObj("text1").value, 1.0, 1.15);
+            refObj("text1").value = k;
+            setKoef(inside(refObj("text1").value, 1.0, 1.15));
+            k = inside(refObj("text2").value, 0.05, 0.5);
+            refObj("text2").value = k;
+            setTau(inside(refObj("text2").value, 0.05, 0.5));
+            init();
+            newStart();
+        }
+
+        function clearScreen() {
+            clearS();
+        }
+
+        function begin() {
+            if (opener) refObj("tb3").style.margin = "auto";
+        }
+    </script>
+</head>
+
+<body style="margin-left:0;margin-top:0" onload="javascript:begin()">
+    <table id="tb3" style="margin-left: 0;width:640px;border:1px solid black;background-image:URL(images/MoonBeam.jpg);border-collapse: collapse;">
+        <tr>
+            <td>
+                <div>
+                    <h1 style=" font-size:25px">Размножение нейтронов</h1>
+                    При пуске реактора число нейтронов растет со временем, если созданы условия для цепной реакции. Скорость роста зависит от коэффициента размножения k и времени жизни нейтронов одного поколения &#964;. Исследуйте зависимость числа нейтронов N от этих параметров
+                    (k = 1.00 - 1.15, &#964; = 0,05 - 0,50 с). Сделайте вывод.</div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:630px">
+                <table style="width:100%;BORDER:1px solid black">
+                    <tr>
+                        <td style="width:330px;height:170px;background-color:cyan">
+                            <canvas id="Canvas3" width="330" height="170">	no Canvas.</canvas>
+                        </td>
+                        <td style="width:300px;height:250px;background-color:#EEEEEE" rowspan="2">
+                            <div id="Graph3" style="height: 250px; max-width: 300px; margin: 0px auto; z-index:1">
+                                <script type="text/javascript">
+                                    graph3 = document.getElementById("Graph3");
+                                    var plotParams1 = {
+                                        series: {
+                                            points: {
+                                                show: true,
+                                                symbol: "cross"
+                                            }
+                                        },
+                                        color: ["blue"],
+                                        grid: {
+                                            hoverable: true,
+                                            backgroundColor: {
+                                                colors: ["#00FFFF", "#00FFFF"]
+                                            }
+                                        },
+                                        xaxis: {
+                                            max: 2.5,
+                                            min: 0,
+                                            axisLabelUseCanvas: false,
+                                            axisLabel: "t"
+                                        },
+                                        yaxis: {
+                                            max: 20,
+                                            min: 0,
+                                            axisLabel: "N",
+                                            axisLabelUseCanvas: false
+                                        }
+                                    };
+                                    plot = $.plot("#Graph3", [d1], plotParams1);
+                                </script>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:330px;height:100px;text-align: left;">
+                            <TABLE>
+                                <TR>
+                                    <TD style="WIDTH:326px">
+                                        <TABLE style="border-collapse: collapse;">
+                                            <TR>
+                                                <TD style="background-color:#937b58;vertical-align:middle;text-align: center;height:50px" colspan="3">
+                                                    <h3 style="color:#FFFFFF">Исходные данные</h3>
+                                                </TD>
+                                            </TR>
+                                            <TR>
+                                                <TD style="background-color:#EEEEEE;text-align: center;height:50px;width: 110px">
+                                                    <div style="font-size:18px">k =&nbsp;<input style="font-size:18px" type="text" ID="text1" size=3 value="1.05"></div>
+                                                </TD>
+                                                <TD style="text-align: center;WIDTH:110px;background-color:#EEEEEE">
+                                                    <button style="color:#AA0000" type="button" onclick="javascript:formStart()">Старт</button>
+                                                </td>
+                                                <TD style="text-align: center;WIDTH:110px;background-color:#EEEEEE">
+                                                    <div style="font-size:19px">
+                                                        &#964; = <input style="font-size:18px" type="text" ID="text2" size="3" value="0.05"></div>
+                                                </TD>
+                                            </TR>
+                                        </TABLE>
+                                    </TD>
+                                    <!--TD style="vertical-align: top;width:4px;background-color:#606060">
+<img src="images/noshad.gif" style="heigh:3px;width:4px" alt="">
+</TD-->
+                                </TR>
+                                <!--TR>
+<TD COLSPAN="2" style="width:330px;background-color:#606060">
+<img src="images/noshad.gif" style="heigh:3px;width:4px" alt=""><BR></TD>
+</TR-->
+                            </TABLE>
+                        </td>
+                    </tr>
+                </TABLE>
+            </td>
+        </tr>
+        <tr>
+            <td style="height:40px;text-align: center;">
+                <button style="color:#AA0000;width:100px" type="button" onclick="javascript:clearScreen()">Очистка</button>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

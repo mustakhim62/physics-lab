@@ -1,0 +1,482 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <link rel=stylesheet href="../css/mysheet.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <title> Излучение атомов водорода </title>
+    <script type="text/javascript" SRC="./js/spectr.js"></script>
+    <script type="text/javascript" SRC="./js/levels.js"></script>
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <script type="text/javascript">
+        var atomH = new Image();
+        atomH.src = './images/atomH.gif';
+        var button_no = 0;
+        var pics = new Array();
+        var atext = new Array();
+        var di = new Array();
+        var ntext = 1;
+        var answ;
+        var isLoad = false;
+        var dtop;
+        var dleft;
+        var Zh, n2, n1, lambdaH;
+        var S_for_answ = ["инфракрасн.", "ультрафиолет", "видимая"];
+        var true_answ = new Array(7);
+        var S_for_replace = new Array();
+        var all_text;
+        var nred, n17, n27, Zh7;
+
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function formExit() {
+            document.location.href = "../atomic.html";
+        }
+
+        function formEnter(e) {
+            if (!e) {
+                e = window.event;
+                if (e.keyCode == 13) formOk();
+            }
+        }
+        var ntask;
+
+        function windTasks(n) {
+            var w = 780;
+            var l = 0;
+            ntask = n;
+            if (screen.width > 800) {
+                w = 900;
+                l = 20;
+            };
+            window.open('../question/question.html?nt=' + ntask, 'Задачи', 'width=' + w + ',height=600,scrollbars=yes,left=' + l + ',top=10')
+        }
+
+        function windOpen() {
+            var w = 900;
+            var h = 800;
+            if (screen.width <= 800) {
+                w = 600;
+                h = 400;
+            };
+            window.open('../../atomH/index.html', null, 'width=' + w + ',height=' + h + ',left=50,top=80,scrollbars=yes') //530
+        }
+
+        function formStart() {
+            if (ntext < 4) {
+                startM();
+                setActiv0(true);
+                setScale(0);
+                showLambda();
+            }
+        }
+
+        function formStop() {
+            stopM();
+            setActiv0(false);
+        }
+
+        function doLoad() {
+            for (var i = 0; i < 2; i++) {
+                dtop = 44 + i * 312 + parseInt(refObj("t1").offsetTop);
+                dleft = 275 + i * 335 + parseInt(refObj("t1").offsetLeft);
+                refObj("text1").value = "";
+                refObj("text4").value = "";
+                refObj("text5").value = "";
+                refObj("text37").value = "";
+            }
+            atomH.src = './images/atomH.gif';
+            setText(ntext, "myText");
+            isLoad = true;
+        }
+
+        function showLambda() {
+            if ((isLoad) && (ntext == 1)) refObj("text1").value = getLambda() + " нм";
+            else refObj("text1").value = "";
+        }
+
+        function showE() {
+            if ((isLoad) && (ntext != 6)) refObj("text37").value = getE();
+        }
+
+        function shiftSpectr(name, dir) {
+            if (ntext == 1) {
+                change_pic(name, 2);
+                startMS(dir); //          refObj("SP").
+            }
+        }
+
+        function stopSpectr(name) {
+            if (ntext <= 2) {
+                change_pic(name, 1);
+                spectr_stop();
+            }
+        }
+
+        function changeScale() {
+            hideTransition(); //         refObj("LV").
+            changeScaleS(); //         refObj("SP").
+        }
+
+        function formTasks() {
+            ntext++;
+            setText(ntext, "myText");
+            switch (ntext) {
+                case 2:
+                    refObj("text5").value = "";
+                    refObj("text4").value = "";
+                    refObj("text1").value = "";
+                    isActiv = false;
+                    paintS();
+                    getLine();
+                    setTransition(n1, n2, 1);
+                    true_answ[2] = String(round_double(lambdaH));
+                    break;
+                case 3:
+                    refObj("text5").value = "";
+                    refObj("text4").value = "";
+                    hnu = round_double(13.6 * (1 / n2 / n2 - 1 / n1 / n1));
+                    true_answ[3] = String(hnu);
+                    break;
+                case 4:
+                    refObj("text5").value = "";
+                    refObj("text4").value = "";
+                    hideTransition();
+                    break;
+                case 5:
+                    refObj("text5").value = "";
+                    refObj("text4").value = "";
+                    break;
+                case 6:
+                    refObj("text5").value = "";
+                    refObj("text4").value = "";
+                    isNotice = false;
+                    changeColor(nred);
+                    paintL();
+                    break;
+                case 7:
+                    refObj("text5").value = "";
+                    refObj("text4").value = "";
+                    isPointer = true;
+                    isColor = false;
+                    setTransition(n17, n27, Zh7);
+                    paintL();
+                    break;
+                case 9:
+                    refObj("text4").value = "";
+                    setShowTab(true);
+                    hideTransition();
+                    refObj("text4").value = "";
+                    refObj("text5").value = "";
+                    refObj("text37").value = "";
+                    break;
+            }
+        }
+
+        function empty5() {
+            refObj("text5").value = "";
+        }
+
+        function formOk() {
+            if ((refObj("text4").value != "") && (ntext > 1) || (ntext == 9)) {
+                if (ntext != 8) s = "Правильно: ";
+                else s = "";
+                refObj("text5").value = s + true_answ[ntext];
+                if (ntext == 9) setTimeout("refreshTasks9()", 3000);
+                //     if(ntext!=8)setTimeout("refreshTasks()",3000);
+            } else if (ntext != 1) {
+                refObj("text5").value = "А где же ответ?";
+                setTimeout("empty5()", 1000);
+            }
+        }
+        //---------------------------------------------------------------
+        function refreshTasks9() {
+            Zh9 = Zh = 1 + Math.round(Math.random() * 9);
+            true_answ[9] = String(Zh);
+            refObj("text5").value = "";
+            refObj("text37").value = "";
+        }
+        //---------------------------------------------------------------
+        function getLine() {
+            Zh = 1;
+            n2 = 1 + rand(3);
+            n1 = rand(7 - n2) + n2 + 1;
+            lambdaH = find_lambda(n1, n2);
+        }
+
+        function prepareTasks() {
+            getLine(); // задание 3
+            all_text = all_text.replace("&1", String(n2));
+            all_text = all_text.replace("&2", String(round_double(lambdaH)));
+            true_answ[4] = String(n1);
+            getLine(); // задание 4
+            all_text = all_text.replace("&3", String(n1));
+            all_text = all_text.replace("&4", String(round_double(lambdaH)));
+            true_answ[5] = String(n2);
+            nred = n1 = 1 + rand(5); // задание 5
+            all_text = all_text.replace("&5", String(n1));
+            true_answ[6] = String(round_double(-13.6 / n1 / n1));
+            getLine(); // задание 6
+            n17 = n1;
+            n27 = n2;
+            all_text = all_text.replace("&6", String(n1));
+            all_text = all_text.replace("&7", String(n2));
+            Zh7 = Zh = 1 + Math.round(Math.random() * 10);
+            hnu = round_double(13.6 * Math.pow(Zh, 2) * (1 / n2 / n2 - 1 / n1 / n1));
+            true_answ[7] = String(hnu);
+            if (hnu < 1.55) true_answ[8] = S_for_answ[0];
+            else if (hnu > 3.1) true_answ[8] = S_for_answ[1];
+            else true_answ[8] = S_for_answ[2];
+            Zh9 = Zh = 1 + Math.round(Math.random() * 9);
+            true_answ[9] = String(Zh);
+            //Z = 1;
+            return;
+        }
+
+        function getZ() {
+            return Zh;
+        }
+        //---------------------------------------------------------------
+        function preload(pic_name, pic1, pic2) {
+            button_no++;
+            pics[button_no] = new Array(3);
+            pics[button_no][0] = pic_name;
+            pics[button_no][1] = new Image();
+            pics[button_no][1].src = pic1;
+            pics[button_no][2] = new Image();
+            pics[button_no][2].src = pic2;
+        }
+
+        function change_pic(pic_name, j) {
+            var i;
+            for (i = 1; i <= button_no; i++)
+                if (pics[i][0] == pic_name) {
+                    document.images[pic_name].src = pics[i][j].src;
+                    break;
+                }
+        }
+        preload('img_for_button1', "images/left_right0.gif", "images/left_right1.gif");
+        preload('img_for_button2', "images/left_right2.gif", "images/left_right3.gif");
+    </script>
+</head>
+
+<body style="background-image: url(images/WinBack.jpg)" onload="doLoad()" onresize="doLoad()">
+    <div style="text-align:right">
+        <A style="text-align:right" HREF="http://teachmen.csu.ru">Сайт разработчиков</A>
+    </div>
+    <table style="width:740px;margin: auto;">
+        <tr style="text-align: right;">
+            <td>
+                <!--img SRC="images/button_problems.gif" WIDTH="60" HEIGHT="24" BORDER="0"
+ALT="Задачи" align="right" onClick="windTasks(3)">
+<a HREF="../atomic.html"><img SRC="images/exit.gif" WIDTH="42"
+HEIGHT="24" BORDER="0" ALT="Главное меню" align="right"> </a>
+<button style="width:90px;color:#0000AA;text-align: right;" type="button" onclick="javascript:formHelp()">Справка</button>&nbsp;&nbsp;
+<button style="color:#000000;text-align: right;" type="button" onclick="javascript:formExit()">Выход</button>&nbsp;&nbsp;
+<button style="color:#0000AA;text-align: right;" type="button" onclick="javascript:onClick=windTasks(3)">Задачи</button-->&nbsp;&nbsp;
+                <h1 style="color: #0000FF;">Излучение атома водорода</h1>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center">
+                <div style="text-align:justify">
+                    Экспериментальная установка состоит из трубки (кварцевое стекло !), наполненной исследуемым газом, высоковольтного преобразователя (катушки Румкорфа) и спектрографа с уникальной характеристикой, позволяющей наблюдать спектр от ультрафиолета до далекой
+                    инфракрасной области (90 &#126; 5000 нм). При замыкании ключа в цепи питания высокое напряжение подается на трубку, и в ней возникает газовый разряд. Излучение атомов газа разлагается в спектр. Линии ультрафиолетового и инфракрасного
+                    диапазона, невидимые для человека, условно изображены пунктиром. Вы можете по своему желанию изменить масштаб изображения (разрешающую способность) спектрографа, измерить длину волны любой линии, смещая спектр короткими нажатиями кнопок,
+                    так, чтобы эта линия разместилась над указателем. При необходимости можно измерить и энергию атома в разных состояниях. Начните с нажатия кнопки "Старт".</div><br>
+            </td>
+        </tr>
+    </table>
+    <table style="width:727px;margin: auto;BORDER:1px solid black;border-collapse: collapse;" ID="t1">
+        <tr>
+            <td style="width:570px;height:40px;background-color:#000000" colspan=3>
+                <canvas id="Canvas4" width="570" height="40">	no Canvas.</canvas>
+                <script type="text/javascript">
+                    initS();
+                    setTimeout("paintS()", 100);
+                </script>
+            </td>
+            <td rowspan=4 style="width:150px;height:386px;background-color:#000000;border-left:1px solid LightGray;">
+                <table style="width:150px;">
+                    <tr>
+                        <td id="levels" style="width:150px;height:356px;">
+                            <canvas id="Canvas3" width="150" height="356">	no Canvas.</canvas>
+                            <script type="text/javascript">
+                                init();
+                                paintL();
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px;height:30px;text-align:center;vertical-align:middle">
+                            <input type="text" ID="text37" size="13" readonly value="" style="background-color:#E7FFFF;border-width:8px;text-align:center;font-family:times new roman,serif;font-size:12px;padding-left:0">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:570px;height:26px;background-color:#DDDDDD;text-align: center;" colspan=3>
+                <table style="width:570px;border:1px solid black;">
+                    <tr>
+                        <td style="width:68px;height:26px;">
+                            <button style="color:#0000AA;padding-left:5px;width:120px" onclick="javascript:changeScale()">Масштаб</button>
+                        </td>
+                        <td style="width:155px;">&nbsp;</td>
+                        <td style="width:31px;height:26px;">
+                            <img ID='img_for_button1' src="images/left_right0.gif" style="width:31px; HEIGHT:26px; BORDER:0;margin:0" ALT="Влево" onMouseDown="shiftSpectr('img_for_button1',1)" onMouseUp="stopSpectr('img_for_button1')" onmouseout="stopSpectr('img_for_button1')"></td>
+                        <td style="width:120px;background-color:#E7FFFF;text-align: center;"><input type="text" ID="text1" size="11" readonly value="500" style="background-color:#E7FFFF;border-width:8px;text-align:center;font-family:times new roman,serif;font-size:15px;padding-left:0"></td>
+                        <td style="width:31px;"><img ID='img_for_button2' SRC="images/left_right2.gif" style="width:31px; HEIGHT:26px; BORDER:0;margin:0" ALT="Вправо" onMouseDown="shiftSpectr('img_for_button2',-1)" onMouseUp="stopSpectr('img_for_button2')" onmouseout="stopSpectr('img_for_button2')"></td>
+                        <td style="width:155px;">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td id="hyd" style="width:570px;height:200px;background-color:#000000;" colspan=3>
+                <canvas id="Canvas1" width="570" height="200">	no Canvas.</canvas>
+                <SCRIPT type="text/javascript" SRC="./js/hydrogen.js"></SCRIPT>
+                <script type="text/javascript">
+                    init();
+                    paint();
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <td id="myText" style="width:290px;height:110px;background-color:#FFFFF8;font-size:14px;font-weight: bold;padding-left:3px;padding-right:2px;text-align:justify">
+                <div id="cc" style="width:290px;height:110px;font-size:12px;font-weight: bold;overflow-y: scroll;visibility: hidden;"></div>
+                <script type="text/javascript">
+                    function Load(url) { //загрузка текста
+                        $('#cc').load(url, function(response) {
+                            all_text = $dd = response;
+                            prepareTasks();
+                            atext = all_text.split("\n");
+                            di = atext[0].split(" ");
+                        });
+                    }
+
+                    function cng_text() {
+                        Load('./data/hydrogen.txt');
+                        //	Load('http://localhost/tmp/photon_UTF.txt');
+                    }
+                    cng_text();
+
+                    function setText(n, target) {
+                        if (n > di.length) return;
+                        s = 0;
+                        for (i = 0; i < n - 1; i++) s = s + parseInt(di[i]);
+                        nstart = (n == 1) ? 1 : s + 1;
+                        nend = nstart + parseInt(di[n - 1]);
+                        str = "";
+                        for (i = nstart; i < nend; i++) {
+                            str = str + atext[i];
+                        }
+                        refObj(target).innerHTML = str;
+                    }
+                </script>
+            </td>
+            <td style="width:75px;height:110px;background-color:#DDDDDD;vertical-align: middle;">
+                <table style="width:75px;">
+                    <tr>
+                        <td style="width:75px;height:26px;text-align:center">
+                            <button style="color:#AA0000" type="button" onclick="javascript:formStart()">Старт</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:75px;height:26px;text-align:center">
+                            <button style="color:#0000AA" type="button" onclick="javascript:formTasks()">Задание</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:75px;height:26px;text-align:center">
+                            <button style="color:#0000AA" type="button" onclick="javascript:formStop()">Стоп</button>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width:200px;height:110px;vertical-align: top">
+                <table style="width:200px;">
+                    <tr>
+                        <td style="width:200px;height:80px;vertical-align: top">
+                            <TABLE style="width:200px;text-align: center;">
+                                <TR>
+                                    <TD style="width:196px;">
+                                        <TABLE style="width:196px;text-align: center;">
+                                            <TR>
+                                                <TD style="height:40px;background-color:#0E5E9E;vertical-align: middle;text-align: center;">
+                                                    <p style="color:#FFFFFF;font-size:20px">Ваш ответ</p>
+                                                </TD>
+                                            </TR>
+                                            <TR>
+                                                <TD style="background-color:#DDDDDD;vertical-align: bottom;text-align: center;padding:3px">
+                                                    <input type="text" ID="text4" size="5" value="" onkeypress="formEnter(event)">&nbsp; &nbsp;
+                                                    <input TYPE="button" name="b1" value="Ok" onClick="formOk()" style="background-color:rgb(192,192,192);padding:0">
+                                                </TD>
+                                            </TR>
+                                        </TABLE>
+                                    </TD>
+                                    <TD style="width:4px;background-color:#606060;vertical-align: TOP">
+                                        <img src="images/noshad.gif" style="width:4px; HEIGHT:3px; BORDER:0;margin:0" alt="">
+                                    </TD>
+                                </TR>
+                                <!--TR>
+<TD COLSPAN="2" style="width:200px;background-color:#606060;">
+<img src="images/noshad.gif" style="width:4px; HEIGHT:4px; BORDER:0;margin:0" alt=""><BR>
+</TD>
+</TR-->
+                            </TABLE>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height:30px;width:200px;background-color:#0E5E9E;text-align: center;">
+                            <input type="text" ID="text5" size=18 readonly value="" style="background-color:#0E5E9E;border-style:none;color:#FFFFFF;font-size:19px;border-style:solid;border-width:0">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table style="width:740px;margin:auto;">
+        <tr>
+            <td style="text-align: left;">
+                <!--p>
+<img SRC="images/question.gif" WIDTH="60" HEIGHT="24" BORDER="0"
+ALT="Справка" align="left" onClick="windOpen()">
+<img SRC="images/button_problems.gif" WIDTH="60" HEIGHT="24" BORDER="0"
+ALT="Задачи" align="right" onClick="windTasks(3)">
+<a HREF="../atomic.html"><img SRC="images/exit.gif" WIDTH="42"
+HEIGHT="24" BORDER="0" ALT="Главное меню" align="right"></a>
+</p-->
+                <button style="width:90px;color:#0000AA;text-align: left;" type="button" onclick="javascript:windOpen()">Справка</button>&nbsp;&nbsp;</td>
+            <td style="text-align: right;">
+                <button style="color:#000000;text-align: right;" type="button" onclick="javascript:formExit()">Выход</button>&nbsp;&nbsp;
+                <button style="color:#0000AA;text-align: right;" type="button" onclick="javascript:onClick=windTasks(3)">Задачи</button>&nbsp;&nbsp;
+            </td>
+        </tr>
+    </table>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

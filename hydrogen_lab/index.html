@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <link rel=stylesheet href="../css/mysheet.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <title> Излучение атомов водорода </title>
+    <SCRIPT type="text/javascript" SRC="./js/hydrogen.js">
+    </SCRIPT>
+    <script type="text/javascript" SRC="./js/spectrLab.js">
+    </script>
+    <script type="text/javascript" src="./js/writeGraph.js"></script>
+    <script type="text/javascript" src="./js/spline.js"></script>
+    <script type="text/javascript">
+        var i_tube = 0;
+        var atomH, atomH_Hg;
+        atomH_Hg = new Image();
+        atomH_Hg.src = './images/atomH_Hg.gif';
+        atomH = new Image();
+        atomH.src = './images/atomH.gif';
+        var im_screen = [atomH_Hg, atomH];
+        var button_no = 0;
+        var pics = new Array();
+        var condensGraph2;
+        var ctx2;
+        var dtop;
+        var dleft;
+        var Zh, n2, n1, lambdaH;
+        var S_for_answ = ["инфракрасн.", "ультрафиолет", "видимая"];
+        var true_answ = new Array(7);
+        var S_for_replace = new Array();
+        var all_text;
+        var nred, n17, n27, Zh7;
+        var alfa = 1;
+        var Ztimer, Wtimer;
+
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function windOpen() {
+            var w = 900;
+            var h = 800;
+            if (screen.width <= 800) {
+                w = 600;
+                h = 400;
+            };
+            window.open('../../atomH/index.html', null, 'width=' + w + ',height=' + h + ',left=50,top=80,scrollbars=yes') //530
+        }
+
+        function formStart() {
+            startM();
+            setActiv0(true);
+        }
+
+        function formStop() {
+            stopM();
+            setActiv0(false);
+        }
+
+        function formChange() {
+            i_tube = 1 - i_tube;
+            formStop();
+        }
+
+        function formExit() {
+            document.location.href = "../atomic.html";
+        }
+
+        function formHelp() {
+            document.location.href = "./hydrogenH.html";
+        }
+
+        function formFurther() {
+            document.location.href = "../hydrogen/index.html";
+        }
+
+        function shiftSpectr(name, dir) {
+            change_pic(name, 2);
+            startMS(dir);
+            return false;
+        }
+
+        function stopSpectr(name) {
+            change_pic(name, 1);
+            spectr_stop();
+            return false;
+        }
+        //---------------------------------------------------------------
+        function change() {
+            Ztimer = setInterval(runA, 200);
+        }
+        //---------------------------------------------------------------
+        function runA() {
+            alfa -= .1;
+            paint();
+            if (alfa < 0.1) {
+                clearInterval(Ztimer);
+                //	alfa = 1;
+                formChange();
+                Wtimer = setInterval(runB, 200);
+            }
+        }
+
+        function runB() {
+            alfa += .1;
+            paint();
+            if (alfa > 1) {
+                clearInterval(Wtimer);
+                alfa = 1;
+                paint();
+            }
+        }
+        //---------------------------------------------------------------
+        function preload(pic_name, pic1, pic2) {
+            button_no++;
+            pics[button_no] = new Array(3);
+            pics[button_no][0] = pic_name;
+            pics[button_no][1] = new Image();
+            pics[button_no][1].src = pic1;
+            pics[button_no][2] = new Image();
+            pics[button_no][2].src = pic2;
+        }
+
+        function change_pic(pic_name, j) {
+            var i;
+            for (i = 1; i <= button_no; i++)
+                if (pics[i][0] == pic_name) {
+                    document.images[pic_name].src = pics[i][j].src;
+                    break;
+                }
+        }
+
+        function curveDraw() {
+            if (indexXY < 11) {
+                alert("Не все линии ртути измерены. Для надежности нужны все табличные");
+                return;
+            }
+            prepare_data();
+            prepare_curve();
+            isDraw = true;
+            paintGrf();
+        }
+        preload('img_for_button1', "images/left_right0.gif", "images/left_right1.gif");
+        preload('img_for_button2', "images/left_right2.gif", "images/left_right3.gif");
+    </script>
+</head>
+
+<body style="background-image: url(images/WinBack.jpg)">
+    <div style="text-align:right">
+        <A style="text-align:right" HREF="http://teachmen.csu.ru">Сайт разработчиков</A>
+    </div>
+    <table style="width:1028px;margin: auto;">
+        <tr style="text-align: right;">
+            <td>
+                <button style="width:90px;color:#0000AA;text-align: right;" type="button" onclick="javascript:formHelp()">Справка</button>&nbsp;&nbsp;
+                <button style="color:#000000;text-align: right;" type="button" onclick="javascript:formExit()">Выход</button>&nbsp;&nbsp;
+                <button style="color:#0000AA;text-align: right;" type="button" onclick="javascript:formFurther()">Далее</button>&nbsp;&nbsp;
+                <h1 style="color: #0000FF;">Излучение атома водорода</h1>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center">
+                <div style="text-align:justify">
+                    Экспериментальная установка состоит из трубки (кварцевое стекло !), наполненной газом (в начале работы парами ртути), высоковольтного преобразователя (катушки Румкорфа) и спектрографа (область длин волн 400 &#126; 700 нм). При замыкании ключа в цепи питания
+                    высокое напряжение подается на трубку, и в ней возникает газовый разряд. Излучение атомов газа разлагается в спектр. Вы можете измерить длину волны любой линии в относительных единицах <b>k</b>, смещая спектр, так,
+                    чтобы эта линия разместилась над указателем. Ртутная лампа нужна для градуировки спектрографа (длины волн наиболее ярких линий ртути приведены в "Справке"). Градуировочную кривую следует построить на графике. Начните с нажатия кнопки
+                    "Старт".
+                </div><br>
+            </td>
+        </tr>
+    </table>
+    <table style="width:1028px;margin: auto;BORDER:1px solid black;border-collapse: collapse;" ID="t1">
+        <tr>
+            <td style="width:570px;height:40px;background-color:#000000" colspan=3>
+                <canvas id="Canvas4" width="570" height="40">	no Canvas.</canvas>
+                <script type="text/javascript">
+                    initS();
+                </script>
+            </td>
+            <td id="tt" rowspan=4 style="width:500px;height:400px;background-color:#FFFFF8;font-size:14px;font-weight: bold;">&nbsp;
+                <canvas id="condensGraph2" width="460" height="350">
+	no Canvas.
+</canvas>
+                <script type="text/javascript">
+                    condensGraph2 = document.getElementById('condensGraph2'),
+                        ctx2 = condensGraph2.getContext('2d');
+                    init_condensGraph(ctx2, 700, 800, String.fromCharCode(955) + ", нм", "k", "", 2);
+                    condensGraph2.onmousedown = myDown;
+                    condensGraph2.onmouseup = myUp;
+                    condensGraph2.onmousemove = myMove;
+
+                    function myDown(e) {
+                        var mouse = {
+                            x: e.clientX - Math.round(condensGraph2.getBoundingClientRect().left),
+                            y: e.clientY - Math.round(condensGraph2.getBoundingClientRect().top)
+                        }
+                        if (mouse.x > imXGr + dxg - imWidthGr && mouse.x < imXGr + imWidthGr + dxg && mouse.y > imYGr + dyg && mouse.y < imYGr + dyg + 2 * imHeightGr) {
+                            bBeginDrag = true;
+                            dyg = +imYGr - mouse.y + dyg;
+                            dxg = imXGr - mouse.x + dxg;
+                        } else bBeginDrag = false;
+                    }
+
+                    function myUp(e) {
+                        bBeginDrag = false
+                    }
+
+                    function myMove(e) {
+                        var newX = e.clientX - Math.round(condensGraph2.getBoundingClientRect().left);
+                        var newY = e.clientY - Math.round(condensGraph2.getBoundingClientRect().top);
+                        if (bBeginDrag) {
+                            if (newX < x0G - dxg) imXGr = x0G - dxg;
+                            else if ((newX + imWidthGr / 2 + dxg) > wg + x0G) imXGr = wg - imWidthGr / 2 - dxg + x0G;
+                            else imXGr = newX;
+                            if (newY < yg - dyg) imYGr = yg - dyg;
+                            else
+                            if ((newY + imHeightGr / 2 + dyg) > hg) imYGr = hg - imHeightGr / 2 - dyg;
+                            else imYGr = newY; //-dy;
+                            paintGrf();
+                        }
+                    }
+                </script>
+                <input id="6" type="button" value="&#8593;" style="z-index:2;visibility: visible;" onmousedown="javascript:shift_up(1)" />
+                <input id="7" type="button" value="&#8595;" style="z-index:2;visibility: visible;" onmousedown="javascript:shift_up(-1)" />
+                <input id="8" type="button" value="&#8592;" style="z-index:2;visibility: visible;" onmousedown="javascript:shift_horiz(-1)" />
+                <input id="9" type="button" value="&#8594;" style="z-index:2;visibility: visible;" onmousedown="javascript:shift_horiz(1)" />
+                <input id="10" type="button" value="запись" style="color:black;z-index:2;visibility: visible;" onmousedown="javascript:write_sign()" />
+                <input type="button" onclick="javascript:ClearGraphGr2()" value="Очистка" />
+            </td>
+        </tr>
+        <tr>
+            <td style="width:570px;height:26px;background-color:#DDDDDD;text-align: center;" colspan=3>
+                <table style="width:570px;border:1px solid black">
+                    <tr>
+                        <td style="width:68px;height:26px;">&nbsp;
+                        </td>
+                        <td style="width:155px;">&nbsp;</td>
+                        <td style="width:31px;height:26px;">
+                            <img ID='img_for_button1' src="images/left_right0.gif" style="float: left;width:31px; HEIGHT:26px; BORDER:0;margin:0" ALT="Влево" onMouseDown="shiftSpectr('img_for_button1',1)" onMouseUp="stopSpectr('img_for_button1')" onmouseout="stopSpectr('img_for_button1')"></td>
+                        <td style="width:120px;background-color:#E7FFFF;text-align: center;"><input type="text" ID="text1" size="11" readonly value="500" style="background-color:#E7FFFF;border-width:8px;text-align:center;font-family:times new roman,serif;font-size:15px;padding-left:0">
+                        </td>
+                        <td style="width:31px"><img ID='img_for_button2' SRC="images/left_right2.gif" style="float: left;width:31px; HEIGHT:26px; BORDER:0;margin:0" ALT="Вправо" onMouseDown="shiftSpectr('img_for_button2',-1)" onMouseUp="stopSpectr('img_for_button2')" onmouseout="stopSpectr('img_for_button2')"></td>
+                        <td style="width:155px;">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td id="hyd" style="width:570px;height:200px;background-color:#000000" colspan=3>
+                <canvas id="Canvas1" width="570" height="200">	no Canvas.</canvas>
+                <script type="text/javascript">
+                    init();
+                    //paint();
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center">
+                &nbsp;&nbsp;<button style="color:#AA0000" type="button" onclick="javascript:formStart()">Старт</button>&nbsp;&nbsp;
+                <button style="color:#0000AA" type="button" onclick="javascript:formStop()">Стоп</button>&nbsp;&nbsp;
+                <button style="color:#0000AA;width:150px" type="button" onclick="javascript:change()">Смена лампы</button>&nbsp;&nbsp;
+                <button style="color:#0000AA;width:200px" type="button" onclick="javascript:curveDraw()">Построение кривой</button>
+
+            </td>
+        </tr>
+    </table>
+    <table style="width:740px;margin: auto;">
+        <tr>
+            <td>
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        texts = [' Подведите к указателю поочередно все линии спектра. Соотнесите место линии в серии  с  переходами на схеме уровней энергии атома водорода. Исследуйте все наблюдаемые линии. Сделайте выводы. Дайте ответы на ряд вопросов.',
+            '<b>Задание</b> 1. Определите длину  волны  излучения (в  нм) при указанном  переходе. Введите ответ в окно ответов и нажмите "Ок".',
+            '<b>Задание</b> 2. Определите энергию фотона ( в эВ ), испускаемого атомом водорода при указанном переходе.',
+            '<b>Задание</b> 3. При переходе электрона с некоторого уровня на &1-й атом водорода излучает фотон с длиной волны  &#955; = &2 нм. Найдите m - номер исходного уровня.',
+            '<b>Задание</b> 4. При переходе электрона с &3-го уровня атом водорода излучает фотон  с длиной волны  &#955; = &4 нм. На какой уровень перешел электрон ?',
+            '<b>Задание</b> 5. Вычислите полную энергию электрона, находящегося на &5-ом энергетическом уровне атома водорода. Ответ дайте в электронвольтах.',
+            '<b>Задание</b> 6. Наблюдаем свечение возбужденных водородоподобных  ионов. При этом электрон переходит с &6-го уровня на &7-й. Измерьте необходимые величины и найдите энергию испускаемых квантов ( в эВ ).',
+            '<b>Задание</b> 7. В какой части спектра  излучает ион при этом переходе?',
+            '<b>Задание</b> 8. При ионизации некоторого газа возникли водородоподобные ионы. Схема уровней энергии этого газа дана на экране. Проведите измерения нужных величин и мышкой укажите в таблице, ионы каких атомов присутствуют в трубке.'
+        ];
+    </script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <link rel=stylesheet href="../css/mysheet.css" type="text/css">
+    <link rel="stylesheet" href="../css/style.css" type="text/css">
+    <style type="text/css">
+        td {
+            border: 1px solid black;
+        }
+        
+        td.a {
+            border: 0px;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+    <title> Частица в потенциальной яме </title>
+    <script type="text/javascript" SRC="./js/sqwall1.js"></script>
+    <script type="text/javascript" SRC="./js/math1.js"></script>
+    <script type="text/javascript" SRC="./js/movCl.js"></script>
+    <script type="text/javascript">
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function windTasks(n) {
+            var w = 850;
+            var l = 0;
+            ntask = n;
+            if (screen.width > 800) {
+                w = 800;
+                l = 20;
+            };
+            window.open('../question/question.html?nt=' + ntask, 'Задачи', 'width=' + w + ',height=600,scrollbars=yes,left=' + l + ',top=10')
+                //window.open('question.html','Задачи','width=780,height=600,scrollbars=yes,left=0,top=0')
+        }
+
+        function windOpen(s) {
+            var w = 780;
+            var h = 600;
+            if (screen.width <= 800) {
+                w = 600;
+                h = 400;
+            };
+            window.open(s, null, 'width=' + w + ',height=' + h + ',left=50,top=80,scrollbars=yes') //530
+        }
+
+        function formOk() {
+            window.open("sqwallb.html", null, "top=20,left=10,height=360,width=750,scrollbar=yes")
+        }
+
+        function to_exit() {
+            window.location.href = "../atomic.html";
+        }
+
+        function forward() {
+            window.location.href = "./sqwall2.html";
+        }
+    </script>
+</head>
+
+<body style="background-image: url(images/45.jpg);margin:0;">
+    <div style="text-align:right">
+        <A style="text-align:right;color:white" HREF="http://teachmen.csu.ru">Сайт разработчиков</A>
+    </div>
+    <table style="width:740px;margin: auto;">
+        <tr>
+            <td class="a">
+                <INPUT style="display: inline-block;margin-right: 30px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="windOpen('sqwallH.html')" type="button" value="Справка">
+                <h1 style="display: inline-block;;color:#FFFFD0;font-size:27px;font-style:oblique">Одномерное движение частицы в<br> потенциальной яме бесконечной глубины</h1>
+                <INPUT style="display: inline-block;margin-left: 30px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="to_exit()" type="button" value="Выход">
+            </td>
+        </tr>
+    </table>
+    <table style="width:740px;margin: auto;border:1px solid black;background-color: #FFFFF8">
+        <tr style="color:#6F9F8F;font-weight:bold;font-style:oblique;font-size:19px">
+            <td style="width:400px;height:270px;text-align: center" colspan="2"> Квантовая физика&nbsp; &nbsp;Классическая физика
+                <canvas id="Canvas1" width="400" height="246">	no Canvas.</canvas>
+                <script type="text/javascript">
+                    init1();
+                    //paint1();
+                </script>
+            </td>
+            <td style="width:340px;height:300px;text-align:center;background-image:URL(images/ffon1.gif)" rowspan="2">
+                <div style="text-align:justify;font-size:17px;padding-bottom:10px;padding-left:2px;padding-right:2px;text-indent:30px">
+                    В этом упражнении Вы можете сравнить(с позиций классической и квантовой физики) движения микрочастицы в бесконечно глубокой потенциальной яме шириной a. Положение подвижной стрелки задает энергию частицы Е. Если текущее значение Е разрешено законами физики,
+                    то строится график зависимости плотности вероятности P нахождения частицы от ее координаты. Одновременно наблюдайте за иллюстрацией одномерного движения частицы.</div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:200px;height:30px;text-align:left;padding-left:20px">
+                <canvas id="Canvas2" width="150" height="30">	no Canvas.</canvas>
+                <script type="text/javascript">
+                    init2();
+                    //paint2();
+                </script>
+            </td>
+            <td style="width:200px;height:30px;text-align:left;padding-left:15px">
+                <canvas id="Canvas3" width="150" height="30">	no Canvas.</canvas>
+                <script type="text/javascript">
+                    init3();
+                    //paint3();
+                </script>
+            </td>
+        </tr>
+    </table>
+    <table style="width:740px;margin: auto;border:0;background-color:#FFFFF8">
+        <tr>
+            <td style="width:740px;height:110px;text-align:center;font-weight:bold;background-image:URL(images/wb00m.jpg)">
+                <u style="font-size:18px;color:#0000FF;font-weight:bold">Задание</u><br> Исследуйте поведение моделей при различных значениях энергии. Найдите и сформулируйте для себя как можно больше признаков, отличающих поведение частиц в классической
+                и квантовой моделях. Приготовьтесь к контрольным вопросам на эту тему. Когда будете готовы - нажмите клавишу &#034;Ок &#034;.&nbsp;<input TYPE="button" ID="b2" value="Ok" onClick="formOk()" style="background-color: rgb(230,230,230);font-weight:normal"></td>
+        </tr>
+        <tr>
+            <td style="border: 0;background-image:URL(images/45.jpg)">
+
+            </td>
+        </tr>
+    </table>
+    <div style="width:740px;margin: auto;">
+        <INPUT style="float:right;margin-right: 0px;margin-top:5px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="forward()" type="button" value="Далее">
+    </div>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

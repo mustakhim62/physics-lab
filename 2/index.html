@@ -1,0 +1,334 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<link rel="stylesheet" href="./css/style.css">
+<link rel=stylesheet href="./css/mysheet.css" type="text/css">
+<title> Рассеяние частиц. Опыт Резерфорда. </title>
+<script type="text/javascript" src="./js/MathLib.js"></script>
+<script type="text/javascript" SRC="./js/draw_init_Rez.js"></script>
+<script type="text/javascript" src="./js/scatterGraph.js"></script>
+<script type="text/javascript">
+var pics_count = Array();
+	angle = 0;
+	isStop = true;
+	j = 0;
+var nextTD, nextTr;
+var flag =false;
+var button_no=0;
+var pics=new Array();
+var Dtimer;
+function windOpen(s){   
+var w=780;
+var h=600;
+	 if(screen.width<=800) { w=600;h=400;};
+	window.open(s,null,'width='+w+',height='+h+',left=50,top=80,scrollbars=yes')//530
+         }
+function preload(pic_name,pic1,pic2)
+	{
+	button_no++;
+	pics[button_no]=new Array(3);
+	pics[button_no][0]=pic_name;
+	pics[button_no][1]=new Image();
+	pics[button_no][1].src=pic1;
+	pics[button_no][2]=new Image();
+	pics[button_no][2].src=pic2;
+	}
+preload('img_for_up',"images/up_down0.gif","images/up_down1.gif");
+preload('img_for_dn',"images/up_down2.gif","images/up_down3.gif");
+function change_pic(pic_name,j)
+{
+var i;
+for (i=1;i<=button_no;i++)	
+	if (pics[i][0]==pic_name){
+	   document.images[pic_name].src=pics[i][j].src;
+	   break;
+	   						 }
+}
+function refObj(s){   
+  if(document.getElementById) return document.getElementById( s );
+  else return eval('document.all.' + s);
+}
+function formStop(){refObj("subst").disabled=true}//isStop = false;
+function formThick(n){
+		if(isStop){
+		if(n>0)AddThickness(true);
+		else AddThickness(false);
+		refObj("text3").value = GetThickness();
+         }}
+function formFilter(){
+		if(isStop){
+		SetSubst(refObj("subst").selectedIndex);
+        }}
+function setAngle(dir,name){
+if(isStop){
+	change_pic(name,2);
+	if((dir>0)&&(angle<150)){ angle+=5;}
+	if((dir<0)&&(angle>0)){ angle-=5;}
+	SetAngleR( angle );
+	set_digitsA(angle);
+}
+}
+function stopR(name){
+		change_pic(name,1);
+}
+function Starting(){
+if(!isStop)return;	
+if(ex1){
+//	 change_count();
+		StartCount();
+		formStop();
+}
+else
+  setStart(1);
+}
+function wGraph(x,y){
+		refObj("Graph1").drawPoint(x,y);
+		refObj("Graph1").repaint();
+         }
+function wCount(x,y){
+		refObj("C1").set_digits(x);
+         }
+function formInit(){
+	pics_count=new Array(2);
+	pics_count[0]=new Image();
+	pics_count[0].src="images/count0.gif";
+	pics_count[1]=new Image();
+	pics_count[1].src="images/count1.gif";
+	refObj("subst").selectedIndex=3;
+	init();
+	prepare_screen();
+	init_count(1);
+	init_count_angle(1);
+	set_digits(0);
+	set_digitsA(0);
+}
+function checkAnswer(){
+		if(refObj("choice").options[refObj("choice").selectedIndex].value==2)
+			refObj("text1").value = "Правильно";
+		else refObj("text1").value = "???";
+         }
+function forward(){
+formStop();
+setExp(false);
+angle = 0;
+init();
+SetAngleR(0);
+isStop=true;
+refObj("subst").disabled=false;
+refObj("text3").disabled=false;
+refObj("img_for_up").disabled=false;
+refObj("img_for_dn").disabled=false;
+if(!ex1){Dtimer= setInterval(movement_alfa,50);}	
+set_digitsA(0);
+init_count(1);
+set_digits(0);
+}
+nextTr='<INPUT style="float: right;margin-right: 10px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;display: inline-block;" onclick="changePage()" type="button" value="Дальше">'+
+'<a HREF="./../atomic.html" target="_parent"><INPUT style="margin-right: 10px;font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;display: inline-block;float: right;" type="button" value="Выход"></a>';
+//=====================================
+function changePage(){
+//alert("changePage flag= "+flag)
+if(flag){
+clearInterval(Dtimer);
+ex1=true;
+paint()
+nextTD='<table width="143" cellspacing="0" cellpadding="0" border="0"><tr><td colspan="3">'+
+'<img src="images/rollup.gif" width=143 height=47 border=0 hspace="0" vspace="0" alt=""><\/td><\/tr><tr><td width="3">'+
+'<img src="images/l.gif" width=3 height=151 border=0 hspace="0" vspace="0" alt=""><\/td><td width="144" valign="TOP">'+
+'<div style="font-size:10pt">Установка Резерфорда<\/div><span style="color:Navy;font-size:13;font-style:italic;text-align:left">'+
+'1.Источник частиц<br>2.Фольга<br>3.Экран из ZnS<br>4.Микроскоп <br>5.Камера<br>6.Платформа<br>7.Трубка<br>8.Станина<br>9.Крышка.<\/span>'+
+'<\/td><td width="3"><img src="images/r.gif" width=3 height=151 border=0  hspace="0" vspace="0" alt=""><\/td><\/tr><tr><td colspan="3">'+
+'<img src="images/roll.gif" width=143 height=47 border=0 hspace="0" vspace="0" alt=""><\/td><\/tr><tr>'+
+'<td width="150" height="58" align="center" bgcolor="#186A6A" colspan="3"><canvas id="Canvas2" width="120" height="40">no Canvas.</canvas><\/td><\/tr><tr>'+
+'<td width="150" height="57" align="center" colspan="3" bgcolor="#186A6A"><canvas id="myCanvas" width="120" height="40">no Canvas.'+
+'</canvas><\/td><\/tr><\/table>';
+//nextTr='<img SRC="images/button_forw.gif" WIDTH="42" HEIGHT="24" BORDER="0" ALT="Сравнение моделей атома" align="right" onClick="changePage()">'+
+//'<a HREF="../atomic.html"><img SRC="images/exit.gif" WIDTH="42" HEIGHT="24" BORDER="0" ALT="Главное меню" align="right"><\/a>';
+//setExp(true);
+nextTr='<INPUT style="float: right;margin-right: 10px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="changePage()" type="button" value="Дальше">'+
+'<a HREF="./../atomic.html" target="_parent"><INPUT style="margin-right: 10px;font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;display: inline-block;float: right;" type="button" value="Выход"></a>';
+flag=false;
+}
+else{
+nextTD='<table width="150" BORDER="1" bgcolor="#186A6A" cellspacing="0" cellpadding="0"><tr>'+
+'<td width="150" height="244" valign="top" bgcolor="#FFFFF8" style="text-align:center;font-size:11pt;font-weight:bold">'+
+'Компьютер готов рассчитать зависимость числа рассеянных частиц от угла рассеяния для обеих моделей атома и построить графики этих зависимостей.'+
+' Нажмите клавишу "Счет" и сравните расчетные кривые с опытной.<\/td><\/tr><tr><td width="150" height="120">'+
+'<table width="150" border="1" valign="top"><tr><td width="150" height="60">'+
+'<TABLE WIDTH="150" CELLSPACING="0"CELLPADDING="0" ALIGN="CENTER" BORDER="0"><TR><TD WIDTH="146">'+
+'<TABLE CELLSPACING="0" WIDTH="146" ALIGN="CENTER" BORDER="0" ><TR><TD BGCOLOR="#186A6A" valign="middle" height="20">'+
+'<div style="text-align:center;color:#FFFFFF">Ваш ответ<\/div><\/TD><\/TR><TR><TD align="center">'+
+'<SELECT ID="choice" onChange="checkAnswer()"><OPTION value="0" SELECTED>сделайте выбор<\/OPTION>'+
+'<OPTION value="1" >модель Томсона<\/OPTION><OPTION value="2" >... Резерфорда<\/OPTION><\/SELECT><\/TD><\/TR><\/TABLE><\/TD>'+
+'<TD WIDTH="4" VALIGN="TOP" BGCOLOR="#606060"><img src="images/noshad.gif" height="3" width="4" align="top"><\/TD><\/TR>'+
+'<TR><TD COLSPAN="2" BGCOLOR="#606060" width="150"><img src="images/noshad.gif" height="4" width="4" vspace="0"><BR>'+
+'<\/TD><\/TR><\/TABLE><\/td><\/tr><tr><td width="150" height="50" align="center">'+
+'<input style="color: #FFFFFF;;border-style:solid;border-width:1;border-color:#186A6A;padding-top:2px;background-color:#186A6A" type="text" ID="text1" size="12" value="" readonly>'+
+'<\/td><\/tr><\/table><\/td><\/tr><\/table>';
+nextTr='<a HREF="scatter3.html" target="_parent"><INPUT style="float: right;margin-right: 10px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" type="button" value="Дальше"><\/a>'+
+'<a HREF="javascript:changePage();"><INPUT style="float: right;margin-right: 10px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" type="button" value="Назад"><\/a>'+
+'<a HREF="./../atomic.html" target="_parent"><INPUT style="margin-right: 10px;font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;display: inline-block;float: right;" type="button" value="Выход"></a>';
+forward();
+flag =true;
+}
+refObj("td1").innerHTML=nextTD;
+refObj("travel").innerHTML=nextTr;
+if(!flag){
+  init_count(1);
+  set_digits(0);
+	SetAngleR( 0 );
+	set_digitsA(0);
+}
+}
+</script>
+</head>
+<body style="background-image: url(images/fonbook.gif)" onload='formInit();'> 
+<table style="width:730px;margin: auto;">
+<tr>
+<td>
+<a HREF="./../atomic.html" target="_parent"><INPUT style="display: inline-block;float: left; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" type="button" value="Выход"></a>
+<h1 style="color:#0000FF">Рассеяние частиц. Опыт Резерфорда.</h1>
+</td>
+</tr>
+<tr>
+<td><div style="text-align:justify;font-weight:bold;text-indent:30px">
+     Мы предлагаем Вам провести на компьютере эксперименты по рассеянию частиц с целью  изучения
+строения  атома. Первый опыт (был выполнен  Резерфордом в 1906 г.) заключается
+в измерении числа &#945;-частиц N, рассеянных фольгой, в зависимости от угла рассеяния  &#966;.
+Экспериментальную  кривую можно будет затем сравнить  с предсказаниями по  моделям  Томсона
+(равномерное распределение положительного заряда в атоме) и  Резерфорда (весь  положительный
+ заряд сконцентрирован в точечном  ядре).
+  <p style="text-indent:30px;text-align:justify;font-weight:bold;margin-top:0">Начните  с выбора материала  рассеивающей фольги и ее толщины.
+Затем  измеряйте  число  рассеянных &#945;-частиц для разных положений детектора.
+Сделайте выводы из эксперимента.</p>
+ </div>
+</td>
+</tr>
+</table>
+<table style="width:730px;margin: auto;border:1px solid black">
+<tr>
+<td style="vertical-align: top;width:278px;height:360px;background-color:#186A6A" rowspan="3">
+ <canvas id="Canvas1" width="278" height="360">
+	no Canvas.
+</canvas>
+<script type="text/javascript">
+init();
+SetAngleR( angle );
+</script>
+</td>
+<td ID="td1" rowspan="3" style="width:150px;height:360px;background-image:URL(images/paper1.jpg)">
+<table style="width:143px;border: 0">
+<tr><td colspan="3">
+<img src="images/rollup.gif" style="width:143px; HEIGHT:47px; BORDER:0;margin:0" alt=""></td></tr>
+<tr><td style="width:3px">
+<img src="images/l.gif" style="width:3px; HEIGHT:151px; BORDER:0;margin:0" alt="">
+	
+</td>
+<td style="width:144px;vertical-align: top;text-align:left;padding-left: 15px">
+<div style="font-size:10pt">Установка Резерфорда</div><span style="color:Navy;font-size:13px;font-style:italic;">
+1.Источник частиц<br>2.Фольга<br>3.Экран из ZnS<br>4.Микроскоп <br>5.Камера<br>6.Платформа<br>7.Трубка<br>8.Станина<br>9.Крышка.</span>
+</td><td style="width:3px"><img src="images/r.gif" style="width:3px; HEIGHT:151px; BORDER:0;margin:0" alt=""></td></tr>
+<tr><td colspan="3">
+<img src="images/roll.gif" style="width:143px; HEIGHT:47px; BORDER:0;margin:0" alt="">	
+</td></tr>
+<tr>
+<td style="width:150px;height:58px;background-color:#186A6A;text-align: center;" colspan="3">
+<canvas id="Canvas2" width="110" height="40">no Canvas.</canvas>
+</td></tr>
+<tr><td style="width:150px;height:57px;background-color:#186A6A;text-align: center;" colspan="3">
+<canvas id="myCanvas" width="120" height="40">no Canvas.</canvas>
+</td></tr></table>
+</td>
+<script type="text/javascript" SRC="./js/count_Rez.js"></script>
+<script type="text/javascript">setExperiment(1);init_count_angle(1);	
+SetAngleR( 0 );
+set_digitsA(0);
+</script>
+<td style="width:300px;height:244px;background-color:#FFFFFF;vertical-align: top;" colspan="2">
+ <canvas id="scatterGraph" width="300" height="244">no Canvas</canvas>
+<script type="text/javascript">
+	scatterGraph = document.getElementById('scatterGraph'),
+    ctx = scatterGraph.getContext('2d');
+	d1.push([0, 0]);
+	init_scatterGraph(150,20,String.fromCharCode(966)+", град","ln N",""); // 
+</script>
+</td></tr>
+   <tr>
+  <td style="width:300px;height:57px;" colspan="2">
+  <TABLE style="width:300px;background-color:#186A6A;text-align: center;">
+<TR>
+<TD style="width:296px;">
+  <TABLE style="width:296px;text-align: center;border: 0">
+<TR>
+<TD style="height:20px;text-align: center;vertical-align: middle;">
+		   <SELECT ID="subst" onChange="formFilter()">
+		   <OPTION value="0" SELECTED>&nbsp;&nbsp;&nbsp;Медь</OPTION>
+		   <OPTION value="1" >&nbsp;&nbsp;&nbsp;Серебро</OPTION>
+		   <OPTION value="2" >&nbsp;&nbsp;&nbsp;Олово</OPTION>
+		   <OPTION value="3" >&nbsp;&nbsp;&nbsp;Золото</OPTION>
+		   <OPTION value="4" >&nbsp;&nbsp;&nbsp;Свинец</OPTION>
+		   </SELECT>
+</TD>
+</TR>
+<TR>
+<TD style="background-color:#EEEEEE;text-align: center;">
+<div style="text-align:center"><img src="images/arrow_up0.gif" style="vertical-align: top;width:19px; HEIGHT:20px; BORDER:0;margin:0"
+ onClick="formThick(1)" ALT="Увеличить толщину">&nbsp;
+Толщина фольги, мкм = <input type="text" readonly ID="text3" size="1" value="1">&nbsp;
+<img src="images/arrow_down0.gif" style="vertical-align: top;width:19px; HEIGHT:20px; BORDER:0;margin:0" onClick="formThick(-1)"
+  ALT="Уменьшить толщину"></div>
+</TD>
+</TR>
+</TABLE>
+</TD>
+<TD style="width:4px;background-color:#606060;vertical-align: top;">
+<img src="images/noshad.gif" style="vertical-align: top;width:4px; HEIGHT:3px; BORDER:0;margin:0" alt="">
+</TD>
+</TR>
+<TR>
+<TD COLSPAN="2" style="width:300px;background-color:#606060;">
+<img src="images/noshad.gif" style="width:4px; HEIGHT:4px; BORDER:0;margin:0" alt=""><BR>
+</TD>
+</TR>
+</TABLE>
+  </td>
+  </tr>
+  <tr>
+    <td style="width:210px;height:55px;text-align: center;color:#FFFFFF;font-weight:bold;background-color:#186A6A">Угол поворота, &#176;<br>
+<img ID='img_for_up' src="images/up_down0.gif" style="width:31px; HEIGHT:26px; BORDER:0;margin:0;vertical-align: middle;"
+onMouseDown="setAngle(1,'img_for_up')" onMouseUp="stopR('img_for_up')" onMouseout="stopR('img_for_up')" alt="up">
+<img ID='img_for_dn' src="images/up_down2.gif" style="width:31px; HEIGHT:26px; BORDER:0;margin:0;vertical-align: middle;"
+onMouseDown="setAngle(-1,'img_for_dn')" onMouseUp="stopR('img_for_dn')" onMouseout="stopR('img_for_dn')" alt="down">
+</td>
+<td  style="width:90px;height: 55px;background-color:#186A6A;text-align: center;">
+<button style="color:#AA0000" type="button" onclick="javascript:Starting()">Счет</button>
+<br>
+  <img SRC="images/count0.gif" ID="countOffOn" style="width:13px; HEIGHT:13px; BORDER:0;margin-top:5px;" alt="счет">
+</td></tr>
+</table>
+<!--/form-->
+<table style="width:740px;margin: auto;">
+<tr><td style="width:340px;height:26px;">
+<INPUT style="float: left;margin-right: 30px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="windOpen('scatterH.html')" type="button" value="Справка"></td>
+<td ID="travel"><INPUT style="float: right;margin-right: 10px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;display: inline-block;" onclick="changePage()" type="button" value="Дальше">
+<a HREF="./../atomic.html" target="_parent"><INPUT style="margin-right: 10px;font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;display: inline-block;float: right;" type="button" value="Выход"></a>
+</td>
+</tr>
+</table>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(71529175, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->	
+</body>
+</html>

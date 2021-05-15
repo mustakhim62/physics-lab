@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <link rel=stylesheet href="./css/mysheet.css" type="text/css">
+    <link rel=stylesheet href="./css/style.css" type="text/css">
+    <style type="text/css">
+        td {
+            border: 1px solid black;
+        }
+    </style>
+    <title>Опыт Франка и Герца 1</title>
+    <script type="text/javascript" SRC="./js/frankLib.js"></script>
+    <script type="text/javascript" SRC="./js/load.js"></script>
+    <script type="text/javascript" SRC="./js/frank1.js"></script>
+    <script type="text/javascript" SRC="./js/graph.js"></script>
+    <script type="text/javascript">
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function formStart() {
+            startM();
+            formInit();
+        }
+
+        function formInit() {
+            refObj("text4").value = "";
+            refObj("text1").value = "";
+            ClearGraph();
+        }
+
+        function formOk() {
+            if ((refObj("text4").value != "") && (getOnOff())) { //!=false
+                refObj("text1").value = getU1();
+            }
+            startM();
+            setTimeout("formInit()", 2500);
+        }
+
+        function formEnter(e) {
+            if (!e) {
+                e = window.event;
+                if (e.keyCode == 13) formOk();
+            }
+        }
+    </script>
+</head>
+
+<body style="margin-top:0;margin-left:0" onload="OnLoad();OnRequestStateChange();startF()">
+    <table style="text-align: left;width:650px;border:0;background-image:URL(images/WinBack.jpg)">
+        <tr>
+            <td style="width:650px;border: 0">
+                <table style="width:100%;border: 0">
+                    <tr>
+                        <td style="border: 0">
+                            <h1 style="color:#0e5e9e;font-size:32px">Франк-Герцтің Тәжірибесі</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 0">
+                            <p class="H" style="text-align:center;margin-left:-85px;font-weight:bold">Описание установки.</p>
+                            <div style="text-align:justify;text-indent:30px;padding:4px">
+                                Из трубки выкачан воздух и в нее введено небольшое количество (давление около 1 мм рт.ст.) какого-либо вещества. Электроны, испускаемые накаленным катодом (1), ускоряются в постоянном электрическом поле, созданном между катодом и сетчатым анодом (2).
+                                Между ним и анодом поддерживается небольшое (&#126;1В) задерживающее напряжение. Поэтому на коллектор могут попасть только те электроны, энергия которых больше 1 эВ. Ток с коллектора измеряется микроамперметром. С помощью
+                                реостата (4) Вы можете изменять ускоряющее напряжение ( клавишами &#8592; и &#8594; или, передвигая мышкой движок реостата ).
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <!--a name="begin"></a-->
+                <table style="width:640px;border:1px solid black;border-collapse: collapse;">
+                    <tr>
+                        <td style="width:350px;height:280px;background-color:#ded6c6">
+                            <canvas id="Canvas1" width="350" height="280"> no Canvas.</canvas>
+                            <script type="text/javascript">
+                                init1();
+                                //paint1();
+                            </script>
+                        </td>
+                        <td style="width:290px;height:350px;" rowspan=2>
+                            <table style="width:290px;border-collapse: collapse;">
+                                <tr>
+                                    <td style="width:290px;height:250px;">
+                                        <canvas id="Canvas4" width="290" height="260">no Canvas</canvas>
+                                        <script type="text/javascript">
+                                            init4();
+                                            paint4();
+                                        </script>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:290px;height:100px;background-color:#FFFFF8">
+                                        <div style="text-align:justify;font-size:12px;padding-left: 2px;padding-right: 2px">Плавно изменяйте ускоряющее напряжение от 0 до 12 В и стройте график зависимости I = f( U ). Заметьте, при каких значениях энергии электронов ( в эВ ) наблюдаются спады тока. На сколько отличаются энергии электронов,
+                                            при которых происходят спады тока?</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <tr>
+                            <td style="width:350px;height:70px;">
+                                <table style="width:350px;border:1px solid black;background-image:URL(images/wb00m.jpg)">
+                                    <tr>
+                                        <td style="width:68px;height:70px;text-align: center;">
+                                            <button style="width:68px;color:#AA0000" type="button" onclick="javascript:startM()">Старт</button>
+                                        </td>
+                                        <td style="width:165px;height:70px;text-align: center;font-weight:bold;font-size:medium">Ваш ответ<br>
+                                            <span style="font-size:12px">
+                      &#916;E, эВ =</span> <input type="text" ID="text4" size=2 value="" onkeypress="formEnter(event)">
+                                            <input TYPE="button" id="b1" value="Ok" onClick="formOk()" style="background-color:rgb(230,230,230);font-weight:normal;">
+                                        </td>
+                                        <td style="width:115px;height:70px;text-align: center;">
+                                            <p class="H" style="padding-bottom:6px;font-weight:bold;font-size:medium;text-indent:0;text-align:center">
+                                                Правильно</p>
+                                            <input style="border-width:1;color:#0000FF;font-size:15px;border-style:solid;padding-top:2px;background-image:URL(images/wb00m.jpg);border-color:#ffffff" type="text" ID="text1" size="6" value="" readonly>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                </table>
+            </td>
+            </tr>
+    </table>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript>
+    <div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div>
+  </noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

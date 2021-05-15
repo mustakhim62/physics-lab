@@ -1,0 +1,305 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <link rel=stylesheet href="./css/mysheet.css" type="text/css">
+    <link rel="stylesheet" href="./css/style.css">
+    <style type="text/css">
+        li {
+            margin: 0;
+            padding: 0;
+            text-align: left;
+        }
+    </style>
+    <title> Рассеяние электронов. </title>
+    <!--script type="text/javascript" SRC="./js/button_gif.js"></script-->
+    <script type="text/javascript" src="./js/scatterGraph.js"></script>
+    <script type="text/javascript" SRC="./js/MathLib.js"></script>
+    <script type="text/javascript">
+        var button_no = 0;
+        var msg = [];
+        var pics = new Array();
+        msg[0] = "r<a: P(r)=const; r>a: P(r)=0";
+        msg[1] = "P(r)=A" + String.fromCharCode(183) + String.fromCharCode(948) + "(r-a)";
+        msg[2] = "P(r)=A" + String.fromCharCode(183) + "exp(-2*r/a)";
+        var position = 25;
+        pos = 1;
+        var pics_count = Array();
+        var pics_model = Array();
+        angle = 0;
+        isStop = true;
+        j = 0;
+        out = " ";
+        n = 0;
+        var d1 = [];
+
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function windTasks(n) {
+            var w = 850;
+            var l = 0;
+            ntask = n;
+            if (screen.width > 800) {
+                w = 800;
+                l = 20;
+            };
+            window.open('../question/question.html?nt=' + ntask, 'Задачи', 'width=' + w + ',height=600,scrollbars=yes,left=' + l + ',top=10')
+                //window.open('question.html','Задачи','width=780,height=600,scrollbars=yes,left=0,top=0')
+        }
+
+        function windOpen(s) {
+            var w = 780;
+            var h = 600;
+            if (screen.width <= 800) {
+                w = 600;
+                h = 400;
+            };
+            window.open(s, null, 'width=' + w + ',height=' + h + ',left=50,top=80,scrollbars=yes') //530
+        }
+
+        function setAngle(dir, name) {
+            if (isStop) {
+                change_pic(name, 2);
+                if ((dir > 0) && (angle < 85)) {
+                    angle += 5;
+                }
+                if ((dir < 0) && (angle > 0)) {
+                    angle -= 5;
+                }
+                SetAngle3(angle);
+            }
+        }
+
+        function stopR(name) {
+            change_pic(name, 1);
+        }
+
+        function Starting3() {
+            if (!isStop) return;
+            StartMove3();
+            //		setType(0);
+            //		isStop = true;
+        }
+
+        function formChoice() {
+            var f = document.getElementsByName('choice1');
+            //alert("f.length="+f.length)
+            i = 0;
+            while ((i < f.length) && (f[i].checked == false)) {
+                i++;
+            }
+
+            refObj("model").src = pics_model[i].src;
+            pos = position;
+            out = " ";
+            n = i;
+            setModel(i);
+            scroller();
+            for (i = 0; i < f.length; i++) f[i].disabled = true;
+        }
+
+        function ChoiceAbled() {
+            var f = document.getElementsByName('choice1');
+            for (i = 0; i < f.length; i++) f[i].disabled = false;
+        }
+
+        function change_pic(pic_name, j) {
+            var i;
+            for (i = 1; i <= button_no; i++)
+                if (pics[i][0] == pic_name) {
+                    document.images[pic_name].src = pics[i][j].src;
+                    break;
+                }
+        }
+
+        function change_count() {
+            if (!isStop) return;
+            j = 1 - j;
+            refObj("countOffOn").src = pics_count[j].src;
+        }
+
+        function formInit() {
+            pics_model = new Array(3);
+            for (i = 0; i < 3; i++) {
+                pics_model[i] = new Image();
+                pics_model[i].src = "images/p" + i + ".gif";
+            }
+            init3();
+            SetAngle3(0);
+            init_count(2)
+            set_digits(0);
+        }
+        pics_count = new Array(2);
+        pics_count[0] = new Image();
+        pics_count[0].src = "images/count0.gif";
+        pics_count[1] = new Image();
+        pics_count[1].src = "images/count1.gif";
+
+        function scroller() {
+            for (i = 0; i < pos; i++) out += " ";
+            if (pos >= 0) out += msg[n]
+            else out = msg[n].substring(-pos, msg[n].length)
+            refObj("text1").value = out
+            out = " "
+            pos--
+            if (pos < -(msg[n].length)) clearTimeout(timeID);
+            timeID = setTimeout('scroller()', 100)
+        }
+    </script>
+</head>
+
+<body style="background-image: url(images/fonbook.gif)" onLoad="formInit()">
+    <table style="width:742px;margin: auto;">
+        <tr>
+            <td>
+                <INPUT style="float: left;margin-right: 10px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;display: inline-block;" onclick="windTasks(2)" type="button" value="Задачи">
+                <h1 style="color: #0000FF;display: inline-block;">Рассеяние электронов.</h1>
+                <a HREF="index.html" style="display: inline-block;float:right">
+                    <INPUT style="margin-right: 10px;font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" type="button" value="Назад">
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="text-align:justify;text-indent:30px">
+                    Теперь попробуем ответить на вопрос: а как в атоме движутся электроны? Какой объем занимают, где встречаются чаще, где реже? Для этого проведем опыт по рассеянию электронов и сопоставим результаты с расчетами по различным теоретическим моделям. В качестве
+                    бомбардирующих нужны легкие частицы - электроны, т.к. их отклонение от первоначального направления движения чувствительно к числу и расположению атомных электронов.Как и в случае &#945;-частиц следует измерять угловое распределение
+                    рассеянных электронов N(&#966;).
+                    <p style="text-indent:30px;text-align:justify;margin-top:0">Проведите эксперимент, затем выберите одну из моделей движения электронов в атоме. После сравнения теоретической и экспериментальной зависимостей N(&#966;) сделайте вывод о пригодности выбранной модели. Опробуйте другие модели.</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table style="width:730px;margin: auto;border: 1px solid black">
+        <tr>
+            <td style="width:240px;height: 244px;background-color:#186A6A;vertical-align: top;">
+                <canvas id="Canvas3" width="240" height="244">
+	no Canvas.
+</canvas>
+                <script type="text/javascript" SRC="./js/scatter3.js"></script>
+                <script type="text/javascript">
+                    init3();
+                    SetAngle3(0);
+                </script>
+            </td>
+            <td style="width:200px;height: 244px;vertical-align: top;">
+                <table style="width:200px;height: 244px;border:0;background-image:URL(images/paper1.jpg)">
+                    <tr>
+                        <td style="width:200px;vertical-align: top;text-align: center;"><span style="color:Navy;font-size:15px;font-style:italic;font-weight:normal;font-family:serif;margin:0">
+Установка содержит электронную пушку(1), источник атомарного водорода (2), 
+детектор электронов (3). Потоки  электронов и атомов водорода пересекаются в центре  камеры (4).
+ 1.Проведите измерения в диапазоне 0-85 градусов; 2.сопоставьте с теорией и выберите модель,
+  согласующуюся с экспериментом.</span>
+                            <td>
+                    </tr>
+                </table>
+                </td>
+                <td style="width:300px;height: 244px;background-color:#FFFFFF;vertical-align: top;">&nbsp;
+                    <canvas id="scatterGraph" width="300" height="244">no Canvas</canvas>
+                    <script type="text/javascript">
+                        scatterGraph = document.getElementById('scatterGraph'),
+                            ctx = scatterGraph.getContext('2d');
+                        d1.push([0, 0]);
+                        init_scatterGraph(90, 150, String.fromCharCode(966) + ", град", "N", ""); //
+                    </script>
+                </td>
+        </tr>
+        <tr>
+            <td style="width:740px;height: 112px;" colspan="3">
+                <table style="width:740px;background-color:#D0D0C0;margin: auto;border: 1px solid black">
+                    <tr>
+                        <td style="width:160px;height: 57px;background-color:#186A6A;margin: auto;" colspan="2">
+                            <canvas id="myCanvas" width="120" height="40">no Canvas.</canvas>
+                            <script type="text/javascript" SRC="./js/count_Rez.js"></script>
+                            <script type="text/javascript">
+                                init_count_angle(2);
+                                init_count(2);
+                                set_digits(0);
+                            </script>
+                        </td>
+                        <td style="width:290px;height: 112px;background-image:URL(images/paper1.jpg)" rowspan="2">
+                            <table style="width:290px;">
+                                <tr>
+                                    <td style="width:110px;height: 112px;">
+                                        <img src="images/comp1.gif" ID="mdel" style="width:93px;height:112px;padding-left:0" alt=""></td>
+                                    <td style="width:87px;vertical-align: top">Электрон тығыздығының таралуы =><br><input type="text" ID="text1" size="15" value="" style="text-align:left;font-size:13px;border-style:solid;border-width:0;background-image:URL(images/paper1.jpg)"></td>
+                                    <td style="width:93px">
+                                        <img src="images/p0.gif" ID="model" style="width:93px;height:112px" alt="модель"></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width:300px;height: 112px;background-color:#FFFFFF" rowspan="2">
+                            <ul style="margin-left:5px;font-size:14px;text-align:left;font-weight:bold;color:Navy;padding-left:10px;margin: 0" type="none">
+                                <li><img src="images/empty.gif" style="vertical-align: top;width:1px;height:1px" alt=""><input type="radio" name="choice1" onClick="formChoice()" style="padding:0">Электрон встречается одинаково часто в любой точке объема атома.</li>
+                                <li><img src="images/empty.gif" style="vertical-align: top;width:1px;height:1px" alt="">
+                                    <input type="radio" name="choice1" onClick="formChoice()" style="padding:0">Движение по круговой орбите.</li>
+                                <li><img src="images/empty.gif" style="vertical-align: top;width:1px;height:1px" alt="">
+                                    <input type="radio" name="choice1" onClick="formChoice()" style="padding:0">Сложное движение, описываемое квантовой механикой.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:75px;height: 56px;background-color:#186A6A;text-align: center;">
+                            <img ID='img_for_up' src="images/up_down0.gif" style="float: left;width:31px;height:26px" onMouseDown="setAngle(1,'img_for_up')" onMouseUp="stopR('img_for_up')" onMouseout="stopR('img_for_up')" alt="up">
+                            <img ID='img_for_dn' src="images/up_down2.gif" style="float: right;width:31px;height:26px" onMouseDown="setAngle(-1,'img_for_dn')" onMouseUp="stopR('img_for_dn')" onMouseout="stopR('img_for_dn')" alt="down"></td>
+                        <td style="width:75px;height: 56px;background-color:#186A6A;text-align: center;">
+                            <button style="color:#AA0000" type="button" onclick="javascript:Starting3()">Счет</button>
+                            <br>
+                            <img SRC="images/count0.gif" ID="countOffOn" style="width:13px;height:13px;margin-top:5px" alt="OnOff"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table style="width:740px;margin: auto;">
+        <tr>
+            <td style="width:340px;height:26px;">
+                <INPUT style="float: left;margin-right: 30px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="windOpen('scatterH.html')" type="button" value="Справка">
+            </td>
+            <td ID="travel">
+                <a HREF="index.html">
+                    <INPUT style="margin-right: 10px;font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;display: inline-block;float: right;" type="button" value="Назад">
+                </a>
+                <a HREF="../atomic.html" target="_parent">
+                    <INPUT style="margin-right: 10px;font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;display: inline-block;float: right;" type="button" value="Выход">
+                </a>
+                <INPUT style="float: right;margin-right: 10px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;display: inline-block;" onclick="windTasks(2)" type="button" value="Задачи">
+            </td>
+        </tr>
+    </table>
+    <!--table style="width:742px;margin: auto;">
+  <tr>
+  <td>
+<p> 
+<img SRC="images/question.gif"  style="float: left;width:60px;height:24px" ALT="Справка" onClick="windOpen('scatterH.html')">
+<a HREF="./../atomic.html"><img SRC="images/exit.gif" style="float: left;width:42px;height:24px" ALT="Главное меню" > </a>
+<img SRC="images/button_problems.gif" style="float: right;width:60px;height:24px" ALT="Задачи" onClick="windTasks(2)">
+<a HREF="index.html"><img SRC="images/button_back.gif" style="float: right;width:42px;height:24px" ALT="Опыт Резерфорда"></a></p></td>
+</tr>
+</table-->
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

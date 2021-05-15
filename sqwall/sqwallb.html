@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <link rel=stylesheet href="../css/mysheet.css" type="text/css">
+    <title>Частица в бесконечно глубокой потенциальной яме</title>
+    <style type="text/css">
+        INPUT {
+            border: none;
+            text-align: left;
+            background-color: #FFFFF8;
+        }
+        
+        LI {
+            text-align: left;
+            font-weight: bold;
+            color: #0E5E9E
+        }
+    </style>
+    <!--script type="text/javascript" SRC="button_gif.js"></script-->
+    <script type="text/javascript" SRC="./js/common.js"></script>
+    <script type="text/javascript" SRC="./js/mix.js"></script>
+    <script type="text/javascript">
+        var S = new Array("В квантовой физике значения энергии дискретны",
+            "В классической физике энергия основного состояния равна нулю",
+            "В квантовой физике вероятность обнаружить частицу  меняется от точки к точке",
+            "В квантовой физике энергия основного состояния не равна нулю",
+            "В классической и квантовой физике значения энергии непрерывны",
+            "В классической и квантовой физике энергия основного состояния равна нулю",
+            "В классической и квантовой физике энергия основного состояния не равна нулю",
+            "В классической и квантовой физике значения энергии дискретны",
+            "В классической физике вероятность обнаружить частицу меняется от точки к точке",
+            "В классической физике вероятность обнаружить частицу не зависит от координаты");
+        var n = new Array(1, 1, 1, 1, 0, 0, 0, 0, 0, 1);
+    </script>
+</head>
+
+<body style="background-image: url(images/45.jpg);margin:0;">
+    <!--form ID="form1" action="./"-->
+    <table style="width:740px;margin: auto;background-color: #FFFFF8">
+        <tr>
+            <td style="width:740px;height:30px;text-align: center;font-weight:bold" colspan="2">
+                <u>Отметьте все правильные утверждения и нажмите</u>&nbsp;
+                <input style="width:50px;border:double;background-color:#DDDDDD;border-color:#000000;color:rgb(0,0,255)" type="button" value="Ввод" ID="B1" onClick="formOk()">
+            </td>
+        </tr>
+        <tr>
+            <td ID="td_ol" style="width:740px;height:250px;" colspan="2">
+            </td>
+        </tr>
+        <tr>
+            <td style="width:370px;height:50px;text-align: center;font-weight:normal;vertical-align:middle">
+                Для возврата к упражнению - нажмите
+                <input TYPE="button" value="Ok" onClick="window.close()" style="background-color:rgb(230,230,230);font-weight:bold;width:30px;color:#0000FF"></td>
+            <td style="width:370px;height:50px;text-align: center;vertical-align:middle">
+                <img src="images/empty.gif" ID="pic" style="width:63px;height:49px;vertical-align:middle" alt=""></td>
+        </tr>
+    </table>
+    <!--/form-->
+    <script type="text/javascript">
+        formSort(S, n);
+    </script>
+</body>
+
+</html>

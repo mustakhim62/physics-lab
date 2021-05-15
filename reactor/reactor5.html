@@ -1,0 +1,298 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title> Атомный реактор.Упражнение - 5</title>
+    <link rel=stylesheet href="./css/mysheet.css" type="text/css">
+    <link rel="stylesheet" href="./css/style.css">
+    <style type="text/css">
+        td {
+            border: 1px solid black;
+        }
+        
+        td.a {
+            border: 0px;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <script type="text/javascript" src="./js/jquery.flot.js"></script>
+    <script type="text/javascript" src="./js/jquery.flot.symbol.js"></script>
+    <script type="text/javascript" src="./js/jquery.flot.axislabels.js"></script>
+    <script type="text/javascript" SRC="./js/add_reactor.js">
+    </script>
+    <script type="text/javascript">
+        var d1 = [];
+        var v = 0;
+        var isStop5 = true;
+
+        function stopR() {
+            if (!isStop5) {
+                stop5();
+                stopSR();
+                isStop = true;
+            }
+        }
+
+        function startR() {
+            //alert("startR isStop5= "+isStop5)	
+            if (isStop5) {
+                startM5();
+                startSR();
+                isStop5 = false;
+            }
+        }
+
+        function RezetM() {
+            rezet();
+        }
+
+        function setV(dir) {
+            if ((dir > 0) && (!isStop)) {
+                if (v < 29) set_V(++v);
+            } else if (v > 0) set_V(--v);
+        }
+
+        function setY5(dir, name) {
+            //alert("setY isStop5="+isStop5)
+            if (!isStop5) {
+                change_pic(name, 2);
+                if (dir > 0) {
+                    startRod(true);
+                } else startRod(false);
+            }
+        }
+
+        function stopR(name) {
+            change_pic(name, 1);
+            stopRod();
+        }
+
+        function shimmer() {
+            change_pic('img_for_overheat', 2);
+            setTimeout("change_pic('img_for_overheat',1)", 400);
+        }
+        preload('img_for_overheat', "images/signal.gif", "images/signal1.gif"); // для отладки
+    </script>
+</head>
+
+<body style="margin-left:0;margin-top:0" onload="javascript:init5()">
+    <table style="width:640px;float: left;border-style:solid;border-width:1;background-image:URL(images/paper4.jpg);border-collapse: collapse;">
+        <tr>
+            <td class="a" style="width:640px;float:left">
+                <table style="width:640px;border-collapse: collapse;">
+                    <tr>
+                        <td class="a" style="width:640px">
+                            <h1 style="font-size:26px">Физический пуск реактора</h1>
+                            <div style="text-align:justify;text-indent:30px;padding-left:4px;padding-right: 4px"> Компьютер моделирует работу ядерного реактора. В активной зоне реактора помещены стержни, содержащие уран, и графит, служащий для замедления нейтронов. Активная зона окружена отражателем - стенками из графита для уменьшения
+                                потерь нейтронов за счет вылета. Для регулировки интенсивности протекания реакции деления, в активную зону введены стержни, содержащие материал, сильно поглощающий нейтроны. В исходном положении стержни опущены, поглощение
+                                велико и цепная реакция прекращена. Основная система охлаждения выключена. Скорость теплоносителя не более 5% от номинальной. На экран дисплея выведены показания датчиков температуры активной зоны, выделяемой мощности,
+                                потока нейтронов в реакторе, скорости движения теплоносителя. </div>
+                            <div style="text-align:justify;text-indent:30px;padding-top:0;padding-left:4px;padding-right: 4px">
+                                Ваша задача: изменяя положение регулирующих стержней и скорость движения теплоносителя, вывести реактор на рабочий режим с мощностью около 160 МВт, а затем вернуть реактор в исходное состояние.
+                                <u> Не допускайте перегрева реактора!</u></div>
+                        </td>
+                    </tr>
+                </table><br>
+                <table style="width:640px;border-collapse: collapse;border: 1px solid black;background-color:#EEEEEE">
+                    <tr>
+                        <td style="width:240px;height:170px">
+                            <canvas id="Canvas5" width="240" height="170">	no Canvas.</canvas>
+                            <SCRIPT type="text/javascript" SRC="./js/reactor5.js"></SCRIPT>
+                            <script type="text/javascript">
+                                init5();
+                                paint5();
+                            </script>
+                        </td>
+                        <td style="width:400px;height:170px;background-color:#EEEEEE" colspan=2>
+                            <div id="Graph5" style="height: 170px; max-width: 400px; margin: 0px auto; z-index:1">
+                                <script type="text/javascript">
+                                    graph5 = document.getElementById("Graph5");
+                                    var plotParams1 = {
+                                        series: {
+                                            points: {
+                                                show: true,
+                                                symbol: "cross"
+                                            }
+                                        },
+                                        color: ["blue"],
+                                        grid: {
+                                            hoverable: true,
+                                            backgroundColor: {
+                                                colors: ["#00FFFF", "#00FFFF"]
+                                            }
+                                        },
+                                        xaxis: {
+                                            max: 100,
+                                            min: 0,
+                                            axisLabelUseCanvas: false,
+                                            axisLabel: "t"
+                                        },
+                                        yaxis: {
+                                            max: 20,
+                                            min: 0,
+                                            axisLabel: "ln N",
+                                            axisLabelUseCanvas: false
+                                        }
+                                    };
+                                    plot = $.plot("#Graph5", [d1], plotParams1);
+                                </script>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table style="width:640px;">
+                    <tr>
+                        <td style="width:200px;height:205px;background-color:#ffffe0">
+                            <table style="width:200px;border:0">
+                                <tr>
+                                    <td class="a" style="width:200px;height:175px;background-color:#ffffe0">
+                                        <div style="text-align:center;text-decoration:underline;color:purple;font-size:15px">Схема активной зоны<br> реактора:</div>
+                                        <br>
+                                        <div style="color:purple;text-align:justify;font-size:13px;margin-left:10px">
+                                            1) замедлитель нейтронов;<br> 2) регулирующие стержни<br> ( из них на схеме показан один);<br> 3) стержни, содержащие уран;<br> 4) защита от излучения.</div>
+                                        <div style="text-align:center;font-size:13px">
+                                            Стрелками показаны потоки газа, отводящего тепло из активной зоны.</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="a" style="width:200px;height:30px;background-color:#ffffe0;text-align: center;">
+                                        <img ID='img_for_overheat' SRC="images/signal.gif" style="width:93px;height:30px;vertical-align: middle;" alt="Сигнал перегрева"></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="a" style="width:300px;height:205px;">
+                            <table style="width:300px;">
+                                <tr>
+                                    <td class="a" style="width:300px;height:180px;">
+                                        <table style="width:300px;border:5px solid black;background-color: #DFCFC0;margin: auto;">
+                                            <tr>
+                                                <td class="a" style="width:170px;height:87px">
+                                                    <canvas id="CanvasS" width="170" height="87">	no Canvas.</canvas>
+                                                    <SCRIPT type="text/javascript" SRC="./js/self_recorder.js"></SCRIPT>
+                                                    <script type="text/javascript">
+                                                        initS();
+                                                        paintS();
+                                                    </script>
+                                                </td>
+                                                <td class="a" style="width:125px;height:87px">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="a" style="width:90px;height:87px">
+                                                                <canvas id="CanvasSpeed" width="90" height="87">	no Canvas.</canvas>
+                                                                <SCRIPT type="text/javascript" SRC="./js/speedmetr.js"></SCRIPT>
+                                                                <script type="text/javascript">
+                                                                    initSp();
+                                                                    paintSp();
+                                                                </script>
+                                                            </td>
+                                                            <td class="a" style="width:30px;height:87px;background-color:#DFCFC0;float:right">
+                                                                <canvas id="CanvasV" width="30" height="87">no Canvas.</canvas>
+                                                                <SCRIPT type="text/javascript" SRC="./js/myTape_and_scroll.js"></SCRIPT>
+                                                                <script type="text/javascript">
+                                                                    initV();
+                                                                    paintV();
+                                                                </script>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="a" style="width:170px;height:10px">
+                                                    <div style="font-size:13px">Температура активной зоны</div>
+                                                </td>
+                                                <td class="a" style="width:125px;height:10px">
+                                                    <div style="font-size:13px">Скорость газа, м/с</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="a" style="width:170px;height:90px">
+                                                    <table style="width:170px;">
+                                                        <tr>
+                                                            <td class="a" style="width:170px;height:20px;background-color: #000000">
+                                                                <canvas id="CanvasT" width="170" height="20">	no Canvas.</canvas>
+                                                                <script type="text/javascript">
+                                                                    initT(0);
+                                                                    paintT();
+                                                                </script>
+                                                                <!--applet codebase="./" code="tapeValue.class" NAME="Tp" width="170" height="20">
+    </applet-->
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="a" style="width:170px;height:20px;">
+                                                                <div>Мощность, МВт</div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="width:170px;height:30px;background-color: #000000">
+                                                                <canvas id="CanvasI0" width="170" height="30">	no Canvas.</canvas>
+                                                                <SCRIPT type="text/javascript" SRC="./js/indicator.js"></SCRIPT>
+                                                                <script type="text/javascript">
+                                                                    initI();
+                                                                    set_digits(0, 0);
+                                                                    //paintI(0);
+                                                                </script>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td class="a" style="width:125px;height:90px;">
+                                                    <table style="width:125px;border: 1px solid black">
+                                                        <tr>
+                                                            <td style="width:125px;height:30px;background-color: #000000">
+                                                                <canvas id="CanvasI1" width="125" height="30">	no Canvas.</canvas>
+                                                                <SCRIPT type="text/javascript" SRC="./js/indicator.js"></SCRIPT>
+                                                                <script type="text/javascript">
+                                                                    initI();
+                                                                    set_digits(1, 0);
+                                                                    //paintI(1);
+                                                                </script>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="a" style="width:125px;height:53px;">
+                                                                <div> Реактивность<br> &#961; = k - 1</div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td style="width:85px;height:200px;background-color: #ffffe0">
+                                        <table style="width:85px;border:0">
+                                            <tr>
+                                                <td class="a" style="width:85px;height:85px;background-color: #ffffe0;vertical-align: top;">
+                                                    <div style="font-family:Times,serif; font-size:15px">
+                                                        Управление<br> стержнями</div>
+                                                    <img ID='img_for_up' src="images/up_down0.gif" style="width:31px;height:26px;border: 0;margin: 6px 0 6px 0" ALT="Вверх" onMouseDown="setY5(1,'img_for_up')" onMouseUp="stopR('img_for_up')" onMouseout="stopR('img_for_up')">&#160;&#160;
+                                                    <img ID='img_for_dn' SRC="images/up_down2.gif" style="width:31px;height:26px;border: 0;margin: 6px 0 6px 0" ALT="Вниз" onMouseDown="setY5(-1,'img_for_dn')" onMouseUp="stopR('img_for_dn')" onMouseout="stopR('img_for_dn')"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="a" style="width:85px;height:30px;background-color: #ffffe0;vertical-align: middle;text-align: center">
+                                                    <button style="color:#AA0000" type="button" onclick="javascript:startR()">Старт</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="a" style="width:85px;height:85px;background-color: #ffffe0;vertical-align: middle;text-align: center">
+                                                    <div style="font-family:Times,serif; font-size:15px">
+                                                        Аварийная<br> остановка</div>
+                                                    <img SRC="images/cross2.gif" style="width:40px;height:43px;vertical-align: middle;text-align: center" onClick="RezetM()" alt="Аварийная остановка"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

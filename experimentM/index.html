@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!--		<meta charset="windows-1251">-->
+    <title>Милликен тәжірибесі</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" type="text/css" href="./css/styleM.css">
+    <style type="text/css">
+        td {
+            border: 1px solid black;
+        }
+    </style>
+    <script type="text/javascript" SRC="./js/move_ball_H1.js"></script>
+    <script type="text/javascript" SRC="./js/counterE.js"></script>
+    <script type="text/javascript" SRC="./js/myTime.js"></script>
+    <script type="text/javascript">
+        var start = false;
+        var onOff = true;
+        var onTime = true;
+        var U = 200;
+
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function setU() {
+            if (onOff) {
+                refObj("OnOff").innerHTML = "Өшіру";
+                onOff = false;
+                U = refObj("text1").value;
+                cngU();
+            } else {
+                refObj("OnOff").innerHTML = "Қосу";
+                onOff = true;
+                U = 0;
+                cngU();
+            }
+        }
+
+        function setTime() {
+            if (onTime) {
+                refObj("tm").innerHTML = "Тоқтау";
+                onTime = false;
+                StartTime()
+            } else {
+                refObj("tm").innerHTML = "Уақыт";
+                onTime = true;
+                TimeStop()
+            }
+        }
+
+        function startDrop() {
+            startM();
+        }
+
+        function to_theory() {
+            window.open("theory_Millican.html", "_blank"); //window.location.href="theory_Millican.html";
+        }
+
+        function formExit() {
+            document.location.href = "../atomic.html";
+        }
+    </script>
+</head>
+
+<body style="width:80%;margin-left: 10%;background-color: #ece9d8">
+    <table style="width:750px;margin: auto;">
+        <TBODY>
+            <tr>
+                <td style="border: 0">
+                    <INPUT style="display: inline-block;margin-right: 30px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="to_theory()" type="button" value="Теория">
+                    <h3 style="display: inline-block;">Милликен тәжірибесі</h3>
+                    <INPUT style="display: inline-block;margin-left: 30px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" onclick="formExit()" type="button" value="Шығу">
+                </td>
+            </tr>
+        </TBODY>
+    </TABLE>
+    <DIV class="H">
+        Бұл жұмыста сізге электронның зарядын анықтау үшін Милликен тәжірибесін (1911) жасау ұсынылады. Оның эксперименттік қондырғысы арасында камерасы бар екі металл пластинадан тұратын үлкен жазық конденсатор болды. Конденсатордың пластиналарына Милликен жоғары
+        потенциалдар айырымын туғызатын тұрақты кернеу берді, ал пластиналар арасына май тамшыларының тозаңы орналастырылды. Алдымен Милликен <b>v<sub>1</sub></b> тамшыларының тұрақты түсу жылдамдығын өлшеді, яғни тамшыларға әсер ететін <b>mg</b>        жердің тартылыс күші ауаның кедергі күшімен теңесетін жылдамдық. Камераны толтырып тұрған ауамен үйкеліс нәтижесінде тамшыларда заряд пайда болады. Содан кейін батарея қосылған кезде тамшының көтерілуіне өлшеу жүргізілді. Заряды <b>q</b> тамшыға
+        <b>E</b> электр өрісі жағынан әсер ететін <b>qE</b> күші қосылады да орын алған <b>v<sub>2</sub></b> жылдамдық өлшенеді. Тамшы біркелкі қозғалады, сондықтан күштер теңеседі.
+        <br> Милликеннің тәжірибесі қиын. Сондықтан осы ерен еңбегі үшін марапат 1923 жылғы физика бойынша Нобель сыйлығы, ол қарапайым зарядты анықтау үшін Милликенге және фотоэффектіге берілді.
+        <br> Жұмысты орындау алдында, <span style="color:crimson; font-size:22px"><i>міндетті түрде</i></span> «Теория» деген нүктені басу арқылы жұмыс теориясымен танысу керек.
+        <br>
+    </DIV>
+    <table style="margin: auto;height:550px;width:97%;background-color:#ece9d8;border:1px solid black">
+        <tr>
+            <td ID="td0" style="height:550px;width:77%;color:#484aaa;background-color:#FFFFF1">
+                <canvas id="Canvas1" width="500" height="500">no Canvas</canvas>
+                <script type="text/javascript">
+                    init1();
+                </script>
+            </td>
+            <td style="width:23%;vertical-align: top;">
+                <table style="width:100%;border:1px solid black">
+                    <tr>
+                        <td ID="td1" style="width:100%;height:100px">
+                            <canvas id="CanvasC" width="110" height="40">no Canvas</canvas>
+                            <script type="text/javascript">
+                                initC();
+                                set_digits(0);
+                            </script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100%;height:40px"><button id="tm" style="color:#AA0000" onclick="javascript:setTime()">Уақыт</button>&nbsp;&nbsp;<button id="tm1" style="color:#AA0000" onclick="javascript:clearTime()">Ысыру</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:100%;height:40px"><button style="color:#0000AA" onclick="javascript:startDrop()">Бастау</button>
+                        </td>
+                    </tr>
+                    <tr style="text-align: center">
+                        <td style="width:100%;height:40px">U =&nbsp;&nbsp;&nbsp;+<input type="text" ID="text1" size="5" value="400">&nbsp;&nbsp;<button id="OnOff" style="color:#0000AA" onclick="javascript:setU()">Қосу</button>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

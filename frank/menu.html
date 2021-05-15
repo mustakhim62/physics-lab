@@ -1,0 +1,224 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <link rel=stylesheet href="./css/mysheet.css" type="text/css">
+    <title>Меню.</title>
+    <style type="text/css">
+        .button13 {
+            width: 91px;
+            height: 60px;
+            font-size: 20px;
+            font-weight: 700;
+            color: rgb(255, 255, 255);
+            text-shadow: #2e7ebd 0 1px 2px;
+            text-decoration: none;
+            text-align: center;
+            vertical-align: top;
+            padding: 0;
+            border: 1px solid;
+            border-color: #60a3d8 #2970a9 #2970a9 #60a3d8;
+            border-radius: 6px;
+            outline: none;
+            background: rgb(41, 150, 230);
+            box-shadow: inset rgba(255, 255, 255, .5) 1px 1px;
+        }
+        
+        .vert {
+            text-align: center;
+            transform: rotate(-90deg);
+        }
+        
+        .button13:hover {
+            color: rgba(255, 255, 255, .9);
+            background-image: linear-gradient(#9dc7e7, #74afdd 50%, #378bce);
+        }
+    </style>
+    <SCRIPT type="text/javascript">
+        var dtop;
+        var dleft;
+        var nextQ = ' ';
+        var pics_count = Array();
+        var number;
+        var ntheme;
+        var theme;
+        var bkgr;
+        var step;
+        var layon = new Array();
+        var onoff = new Array();
+        var hl = new Array();
+        var yl = new Array();
+        var xl, xs;
+        var ys;
+        var wl, ws;
+        var hs;
+        var wexp;
+        var hexp;
+
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function change_pic(j) {
+            for (i = 0; i < layon.length; i++)
+                document.images[i * 3 + 2].src = pics_count[0].src;
+            document.images[j * 3 + 2].src = pics_count[1].src;
+        }
+
+        function formInit() {
+            number = parent.number;
+            switch (number) {
+                case 0:
+                case 1:
+                    layon = ["1_exp", "2_exp", "3_exp"];
+                    onoff = ["s_off", "s_on"];
+                    xl = 90;
+                    yl = [41, 41, 41];
+                    wl = 20;
+                    hl = [28, 28, 28];
+                    xs = 0;
+                    ys = 45;
+                    ws = 20;
+                    hs = 23;
+                    wexp = 82;
+                    hexp = 53;
+                    ntheme = number * 3 + 1;
+                    theme = ((number == 0) ? "frank" : "laser");
+                    break;
+                case 2:
+                    layon = ["text1", "text2", "text3", "text4"];
+                    onoff = ["bullet_over", "bullet"];
+                    xl = 20;
+                    yl = [17, 10, 20, 25];
+                    wl = 75;
+                    hl = [46, 60, 47, 29]
+                    xs = 10;
+                    ys = 41;
+                    ws = 7;
+                    hs = 7;
+                    wexp = 100;
+                    hexp = 75;
+                    ntheme = 7;
+                    theme = "decay";
+                    break;
+                case 3:
+                    layon = ["1", "2", "3", "4", "5"];
+                    onoff = ["empty", "daw"];
+                    xl = 95;
+                    yl = [34, 34, 34, 34, 34];
+                    wl = 8;
+                    hl = [10, 10, 10, 10, 10];
+                    //	 xl = 80; yl=[38,38,38,38,38]; wl = 8; hl=[10,10,10,10,10];
+                    xs = 76;
+                    ys = 12;
+                    ws = 16;
+                    hs = 16;
+                    wexp = 82;
+                    hexp = 53;
+                    ntheme = 9;
+                    theme = "reactor";
+            }
+            step = Math.round(300 / layon.length);
+            refObj("tab1").style.backgroundImage = "URL(images/bkgr" + number + ".jpg)";
+            dtop = parseInt(refObj("tab1").offsetTop);
+            dleft = parseInt(refObj("tab1").offsetLeft);
+            pics_count = new Array(2);
+            pics_count[0] = new Image();
+            pics_count[0].src = "images/" + onoff[0] + ".gif";
+            pics_count[1] = new Image();
+            pics_count[1].src = "images/" + onoff[1] + ".gif";
+            buildTab();
+            refObj("td1").innerHTML = nextQ;
+            refObj("inform").innerHTML = '<a HREF="javascript:windOpen(&quot;' + theme + 'H.html&quot;)"><button class="button13" style="WIDTH:91px;HEIGHT:63px;BORDER:0;font-size:18px">Анықтама</button></a>';
+        }
+
+        function windTasks(n) {
+            var w = 850;
+            var l = 0;
+            ntask = n;
+            if (screen.width > 800) {
+                w = 800;
+                l = 20;
+            };
+            window.open('../question/question.html?nt=' + ntask, 'Задачи', 'width=' + w + ',height=600,scrollbars=yes,left=' + l + ',top=10')
+                //window.open('question.html','Задачи','width=780,height=600,scrollbars=yes,left=0,top=0')
+        }
+
+        function windOpen(s) {
+            var w = 780;
+            var h = 600;
+            if (screen.width <= 800) {
+                w = 600;
+                h = 400;
+            };
+            window.open(s, null, 'width=' + w + ',height=' + h + ',left=50,top=80,scrollbars=yes') //530
+        }
+
+        function buildTab() {
+            // Write the cells to the frame
+            var s0, s1;
+            for (i = 0; i < layon.length; i++) {
+                s0 = '<img src="images/exp' + number + '.gif" style="margin-right:13px;margin-top:20px;margin-bottom:0:;BORDER="0;float:right;width:' + wexp + 'px;HEIGHT:' + hexp + 'px>';
+                s1 = '<img src="images/' + layon[i] + '.gif" style="position: absolute; top:' + (dtop + i * step + yl[i]) + 'px; left:' + (dleft + xl) + 'px" BORDER="0" WIDTH=' + wl + 'px HEIGHT=' + hl[i] + 'px>';
+                nextQ += '<table width="111" frame="above" bordercolorlight="#909090" bordercolordark="#909090" cellspacing="0" cellpadding="0"><tr><td height=' + (step - 1) + ' width="107">' +
+                    '<a HREF=' + theme + (i + 1) + '.html' + ' target="pole" onClick="change_pic(' + i + ')">' +
+                    (number == 2 ? s1 : s0) + '</a>' + (number == 2 ? s0 : s1) +
+                    '<img src=' + pics_count[0].src + ' style="margin-top:0;margin-bottom:0;position:absolute; top:' + (dtop + i * step + ys) + '; left:' + (dleft + xs) + '" WIDTH=' + ws + ' HEIGHT=' + hs + '></td></tr></table>';
+            }
+        }
+    </SCRIPT>
+    <style type="text/css">
+        body {
+            margin-top: 0;
+            margin-left: 0;
+        }
+    </style>
+</head>
+
+<body onload="formInit()">
+    <table ID="tab1" style="width:111px;margin:0;border: 1px solid black;border-collapse: collapse;">
+        <tr>
+            <td ID="td1" style="width:111px;border-collapse: collapse;" colspan="2"></td>
+        </tr>
+        <tr>
+            <td style="WIDTH:10px;HEIGHT:126px;text-align: center;background-color: #E0EFFF" rowspan="2">
+                <a HREF="../atomic.html" target="_parent" onClick="window.close()" style="text-decoration: none;">
+                    <div class="vert" style="background-color:#E0EFFF; width:10px;font-size: 16px;letter-spacing: 8px;text-align: center;padding-right: 20px">
+                        Шығу</div>
+                </a>
+            </td>
+            <td style="height:63px;WIDTH:91px;background-color: #E0EFFF">
+                <INPUT class="button13" style="float: left; margin-bottom: 2px;font-family:serif;" onclick="windTasks(ntheme)" type="button" value="Жаттығу">
+            </td>
+        </tr>
+        <tr>
+            <td ID="inform" style="WIDTH:91px;background-color: #E0EFFF">
+            </td>
+        </tr>
+    </table>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript>
+    <div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div>
+  </noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <link rel=stylesheet href="../css/mysheet.css" type="text/css">
+    <title> Волновые свойства частиц. </title>
+    <script type="text/javascript" SRC="./js/wave0.js"></script>
+    <script type="text/javascript">
+        function makeArray() {
+            this.length = makeArray.arguments.length
+            for (var i = 0; i < this.length; i++)
+                this[i + 1] = makeArray.arguments[i]
+        }
+        var fArray = new makeArray;
+        fArray[0] = "  На экране условно изображены атомы кристаллической решетки.\n" +
+            "При падении электромагнитных  волн  на кристалл они частично\n" +
+            "отражаются. Найдем условие, при выполнении которого волны,\n" +
+            "отраженные от соседних атомных плоскостей будут  усиливать\n" +
+            "друг  друга. На рисунке  d - постоянная  кристаллической\n" +
+            "решетки. Направление падающей волны зададим углом скольжения\n" +
+            "\u03c6 (отсчитывается от поверхности кристалла).\n" +
+            "  В плоскости  1-1 фазы волн  совпадали. В плоскости 2-2  у\n" +
+            "нижнего луча отставание по фазе, т.к.  его путь  длиннее на\n" +
+            "величину \u0394 = CB + BD, называемую разностью хода.";
+        fArray[1] = " Из рисунка видно, что разность хода равна\n" +
+            "			\u0394 = 2\u00b7d\u00b7sin\u03c6.\n" +
+            "  Если разность хода волн кратна  длине волны, то эти волны\n" +
+            "усиливают   друг   друга. Поэтому   интенсивное   отражение\n" +
+            "наблюдается при таких углах, что\n" +
+            "		2\u00b7d\u00b7sin\u03c6 = n\u00b7\u03bb, (n = 1,2,3,...).\n" +
+            "Это условие получено при рассмотрении дифракции рентгеновских\n" +
+            "лучей на кристаллах. В опытах Штерна показана справедливость\n" +
+            "его для атомов и молекул. Мы предлагаем Вам провести\n" +
+            "эксперимент по обнаружению волновых свойств у электронов.";
+        var x = 1;
+        var y = 0;
+        var c = 0;
+        var msg1 = fArray[y];
+        var s = "";
+        var tI;
+
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+
+        function newsFeed() {
+            c = Math.floor(x / 55);
+            if (y == 0 && c > 5) setFlag(c - 6); // refObj("W0").
+            refObj("news2").value = msg1.substring(0, x);
+            x += 1;
+            timerID = setTimeout("newsFeed()", 100);
+            if (x == msg1.length + 1) {
+                clearTimeout(timerID);
+                tI = setTimeout("newPage()", 3000);
+            }
+        }
+
+        function newPage() {
+            y += 1;
+            if (y > 1) clearTimeout(tI);
+            else {
+                refObj("news2").value = ' ';
+                msg1 = fArray[y];
+                x = 0;
+                newsFeed();
+            }
+        }
+
+        function begin() {
+            startM(); // refObj("W0").
+            newsFeed();
+        }
+    </script>
+</head>
+
+<body style="background-image: url(images/mybmp.gif);margin-top:0;margin-left:0" onLoad="begin()">
+    <div style="text-align:right">
+        <A style="text-align:right" HREF="http://teachmen.csu.ru">Сайт разработчиков</A>
+    </div>
+    <table style="width:750px;margin: auto;">
+        <tr>
+            <td>
+                <A HREF="wave2.html">
+                    <INPUT style="float: right;margin: 0; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" type="button" value="Далее">
+                </a>
+                <a HREF="./../atomic.html">
+                    <INPUT style="float: right;margin-left: 5px; font-weight: bold; margin-bottom: 2px;font-size:20px;font-family:serif;" type="button" value="Выход">
+                </a>
+                <!--A HREF="wave2.html"><img SRC="images/button_forw.gif" style="float: right;width:42px; HEIGHT:24px; BORDER:0;margin:0" ALT="Волновые свойства частиц"></a>
+<a HREF="../atomic.html"><img SRC="images/exit.gif" style="float: right;width:42px; HEIGHT:24px; BORDER:0;margin:0" ALT="Главное меню"> </a-->
+                <h1 style="color:#0000A0;font-size:30px;margin-left:100px">Волновые свойства частиц</h1>
+            </td>
+        </tr>
+    </table>
+    <table style="width:490px;margin: auto;">
+        <tr>
+            <td style="width:490px;height:245px;">
+                <canvas id="Canvas1" width="490" height="245">	no Canvas.</canvas>
+                <script type="text/javascript">
+                    init(); // НЕБОЛЬШОЕ ВВЕДЕНИЕ
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:490px;height:165px;background-color:#0000FF">
+                <textarea rows="10" cols="61" ID="news2" readonly style="color:white;font-weight:bold;font-size:14px;overflow:hidden;border:none;background-color:#0000FF">
+</textarea></td>
+        </tr>
+    </table>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(71529175, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/71529175" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+
+</html>

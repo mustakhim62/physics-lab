@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Frameset//EN">
+<html>
+
+<head>
+    <LINK REL=PARENT HREF="atomic.html">
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <SCRIPT type="text/javascript">
+        function refObj(s) {
+            if (document.getElementById) return document.getElementById(s);
+            else return eval('document.all.' + s);
+        }
+        var number = 3;
+
+        function init() {
+            if (screen.width > 800) refObj("frs").cols = "110,119,*,110";
+            //initScroll();
+        }
+    </SCRIPT>
+    <title>Атомный реактор</title>
+</head>
+<frameset ID="frs" cols="0,119,*,0" border="3" onload="init()" frameborder="no" framespacing="0">
+    <frame src="gap.html" noresize scrolling="no">
+        <frame ID="f1" src="menu.html" noresize scrolling="no">
+            <frame ID="f2" src="reactor0.html" name="pole" noresize>
+                <frame src="gap.html" noresize scrolling="no">
+</frameset>
+
+</html>
